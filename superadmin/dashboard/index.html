@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistem Penilaian Angka Kredit Tendik</title>
+
+    <!-- icon -->
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'persian-blue': {
+                            '50': '#e9f4ff',
+                            '100': '#d7ecff',
+                            '200': '#b7d9ff',
+                            '300': '#8bbfff',
+                            '400': '#5e95ff',
+                            '500': '#396dff',
+                            '600': '#1740ff',
+                            '700': '#1f42f6',
+                            '800': '#0e2fc5',
+                            '900': '#15309a',
+                            '950': '#0d1a59',
+                        },
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Sidebar Transition */
+        .sidebar {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .sidebar.collapsed {
+            width: 80px;
+        }
+        
+        .sidebar.collapsed .menu-text,
+        .sidebar.collapsed .logo-text,
+        .sidebar.collapsed .submenu {
+            display: none;
+        }
+        
+        .sidebar.collapsed .menu-item {
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        
+        .sidebar.collapsed .menu-icon {
+            margin-right: 0;
+        }
+        
+        /* Main Content Transition */
+        .main-content {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        /* Submenu Animation */
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+        
+        .submenu.open {
+            max-height: 500px;
+        }
+        
+        /* Overlay for Mobile */
+        .sidebar-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Card Hover Effect */
+        .stat-card {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        
+        /* Active Menu Item */
+        .menu-item.active {
+            background: linear-gradient(135deg, rgba(57, 109, 255, 0.15) 0%, rgba(31, 66, 246, 0.1) 100%);
+            border-left: 3px solid #396dff;
+        }
+        
+        .menu-item.active .menu-icon,
+        .menu-item.active .menu-text {
+            color: #1f42f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Sidebar Overlay (Mobile) -->
+    <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/50 z-40 lg:hidden" onclick="toggleSidebar()"></div>
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar fixed left-0 top-0 h-full w-72 bg-white shadow-xl z-50 flex flex-col -translate-x-full lg:translate-x-0">
+        <!-- Logo Section -->
+        <div class="p-6 border-b border-gray-100">
+            <div class="flex items-center space-x-3">
+                <img src="/image/logo.png" alt="Logo" class="w-full h-full object-contain">
+            </div>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+            <!-- Dashboard -->
+            <a href="/superadmin/dashboard" class="menu-item active flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-persian-blue-50 transition-all duration-200">
+                <ion-icon name="grid-outline" class="menu-icon text-xl mr-3 text-persian-blue-500"></ion-icon>
+                <span class="menu-text font-medium">Dashboard</span>
+            </a>
+            
+            <!-- Master Data -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu('masterDataSubmenu', this)" class="menu-item w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-600 hover:bg-persian-blue-50 transition-all duration-200">
+                    <div class="flex items-center">
+                        <ion-icon name="server-outline" class="menu-icon text-xl mr-3 text-gray-400"></ion-icon>
+                        <span class="menu-text font-medium">Master Data</span>
+                    </div>
+                    <ion-icon name="chevron-down-outline" class="menu-text text-gray-400 transition-transform duration-200 submenu-arrow"></ion-icon>
+                </button>
+                <div id="masterDataSubmenu" class="submenu ml-6 mt-1 space-y-1">
+                    <a href="/superadmin/jabatan-tendik" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="briefcase-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Jabatan Tendik</span>
+                    </a>
+                    <a href="/superadmin/tingkat-tendik" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="layers-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Tingkat Tendik</span>
+                    </a>
+                    <a href="/superadmin/jenjang-tendik" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="trophy-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Jenjang Tendik</span>
+                    </a>
+                    <a href="/superadmin/kategori-kegiatan" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="pricetags-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Kategori Kegiatan</span>
+                    </a>
+                    <a href="/superadmin/kelompok-kegiatan" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="folder-open-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Kelompok Kegiatan</span>
+                    </a>
+                    <a href="/superadmin/sub-kelompok-kegiatan" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="git-branch-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Sub Kelompok Kegiatan</span>
+                    </a>
+                    <a href="/superadmin/hasil-kerja" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="clipboard-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Hasil Kerja</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Kegiatan Tendik -->
+            <a href="/superadmin/kegiatan-tendik" class="menu-item flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-persian-blue-50 transition-all duration-200">
+                <ion-icon name="document-text-outline" class="menu-icon text-xl mr-3 text-gray-400"></ion-icon>
+                <span class="menu-text font-medium">Kegiatan Tendik</span>
+            </a>
+            
+            <!-- Manajemen User -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu('userManagementSubmenu', this)" class="menu-item w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-600 hover:bg-persian-blue-50 transition-all duration-200">
+                    <div class="flex items-center">
+                        <ion-icon name="people-outline" class="menu-icon text-xl mr-3 text-gray-400"></ion-icon>
+                        <span class="menu-text font-medium">Manajemen User</span>
+                    </div>
+                    <ion-icon name="chevron-down-outline" class="menu-text text-gray-400 transition-transform duration-200 submenu-arrow"></ion-icon>
+                </button>
+                <div id="userManagementSubmenu" class="submenu ml-6 mt-1 space-y-1">
+                    <a href="#" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="person-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Daftar User</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="shield-checkmark-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Log Aktivitas</span>
+                    </a>
+                </div>
+            </div>
+            
+        </nav>
+    </aside>
+    
+    <!-- Main Content Area -->
+    <div id="mainContent" class="main-content lg:ml-72">
+        <!-- Top Navbar -->
+        <header class="bg-white shadow-sm sticky top-0 z-30">
+            <div class="flex items-center justify-between px-4 lg:px-8 py-4">
+                <!-- Left Section -->
+                <div class="flex items-center space-x-4">
+                    <!-- Mobile Menu Toggle -->
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors">
+                        <ion-icon name="menu" class="text-2xl text-gray-600"></ion-icon>
+                    </button>
+                    
+                    <!-- Desktop Sidebar Toggle -->
+                    <button onclick="toggleSidebarDesktop()" class="hidden lg:flex p-2 rounded-xl hover:bg-gray-100 transition-colors">
+                        <ion-icon name="menu" class="text-2xl text-gray-600"></ion-icon>
+                    </button>
+                    
+                    <!-- Page Title -->
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-800">Dashboard</h1>
+                        <p class="text-sm text-gray-500 hidden sm:block">Selamat datang kembali!</p>
+                    </div>
+                </div>
+                
+                <!-- Right Section -->
+                <div class="flex items-center space-x-3">
+                    <!-- Search (Desktop) -->
+                    <div class="hidden md:flex items-center bg-gray-100 rounded-xl px-4 py-2.5">
+                        <ion-icon name="search" class="text-gray-400 mr-2"></ion-icon>
+                        <input type="text" placeholder="Cari..." class="bg-transparent border-none outline-none text-sm text-gray-600 w-48">
+                    </div>
+                    
+                    <!-- Notifications -->
+                    <button class="relative p-2.5 rounded-xl hover:bg-gray-100 transition-colors">
+                        <ion-icon name="notifications" class="text-xl text-gray-600"></ion-icon>
+                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                    </button>
+                    
+                    <!-- Profile Dropdown -->
+                    <div class="relative">
+                        <button onclick="toggleProfileMenu()" class="flex items-center space-x-2 p-1.5 rounded-xl hover:bg-gray-100 transition-colors">
+                            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-persian-blue-400 to-persian-blue-600 flex items-center justify-center text-white font-semibold text-sm">
+                                T
+                            </div>
+                            <ion-icon name="chevron-down" class="text-gray-400 hidden sm:block"></ion-icon>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="profileDropdown" class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 hidden">
+                            <div class="px-4 py-3 border-b border-gray-100">
+                                <p class="font-semibold text-gray-800">Super Admin</p>
+                                <p class="text-sm text-gray-500">superadmin@email.com</p>
+                            </div>
+                            <a href="#" class="flex items-center px-4 py-2.5 text-gray-600 hover:bg-gray-50 transition-colors">
+                                <ion-icon name="arrow-undo-circle-outline" class="mr-3"></ion-icon>
+                                <span class="text-sm">Kembali ke SSO</span>
+                            </a>
+                            <div class="border-t border-gray-100 mt-2 pt-2">
+                                <a href="/" class="flex items-center px-4 py-2.5 text-red-500 hover:bg-red-50 transition-colors">
+                                    <ion-icon name="log-out-outline" class="mr-3"></ion-icon>
+                                    <span class="text-sm">Logout</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Page Content -->
+        <main class="p-4 lg:p-8">
+            <!-- Welcome Section -->
+            <div class="mb-8 p-6 bg-gradient-to-r from-persian-blue-600 to-persian-blue-800 rounded-2xl text-white relative overflow-hidden">
+                <div class="absolute right-0 top-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                <div class="absolute right-20 bottom-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/2"></div>
+                <div class="relative z-10">
+                    <h2 class="text-2xl font-bold mb-2">Selamat Datang, Super Admin!</h2>
+                    <p class="text-persian-blue-100 text-sm lg:text-base">Kelola data tendik dan sistem penilaian angka kredit dengan mudah.</p>
+                </div>
+            </div>
+            
+            <!-- Stats Grid - Jenis Tendik -->
+            <div class="mb-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Statistik Tendik Berdasarkan Jenis</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Total Tendik -->
+                    <div class="stat-card bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-persian-blue-400 to-persian-blue-600 flex items-center justify-center shadow-lg shadow-persian-blue-500/30">
+                                <ion-icon name="people" class="text-white text-2xl"></ion-icon>
+                            </div>
+                            <span class="text-xs font-medium text-green-500 bg-green-50 px-2.5 py-1 rounded-full">Aktif</span>
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-1">156</h3>
+                        <p class="text-gray-500 text-sm">Total Tendik</p>
+                    </div>
+                    
+                    <!-- Tendik PLP -->
+                    <div class="stat-card bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                                <ion-icon name="flask" class="text-white text-2xl"></ion-icon>
+                            </div>
+                            <span class="text-xs font-medium text-emerald-500 bg-emerald-50 px-2.5 py-1 rounded-full">38%</span>
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-1">59</h3>
+                        <p class="text-gray-500 text-sm">Tendik PLP</p>
+                    </div>
+                    
+                    <!-- Pranata Komputer -->
+                    <div class="stat-card bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-400 to-violet-600 flex items-center justify-center shadow-lg shadow-violet-500/30">
+                                <ion-icon name="desktop" class="text-white text-2xl"></ion-icon>
+                            </div>
+                            <span class="text-xs font-medium text-violet-500 bg-violet-50 px-2.5 py-1 rounded-full">27%</span>
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-1">42</h3>
+                        <p class="text-gray-500 text-sm">Pranata Komputer</p>
+                    </div>
+                    
+                    <!-- Pustakawan -->
+                    <div class="stat-card bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/30">
+                                <ion-icon name="library" class="text-white text-2xl"></ion-icon>
+                            </div>
+                            <span class="text-xs font-medium text-amber-500 bg-amber-50 px-2.5 py-1 rounded-full">35%</span>
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-1">55</h3>
+                        <p class="text-gray-500 text-sm">Pustakawan</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid - Jenjang Jabatan -->
+            <div class="mb-8">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Distribusi Jenjang Jabatan</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <!-- Penyelia -->
+                    <div class="stat-card bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-rose-100 flex items-center justify-center mb-3">
+                            <ion-icon name="ribbon" class="text-rose-500 text-xl"></ion-icon>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-1">18</h3>
+                        <p class="text-gray-500 text-xs">Penyelia</p>
+                    </div>
+                    
+                    <!-- Mahir -->
+                    <div class="stat-card bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-orange-100 flex items-center justify-center mb-3">
+                            <ion-icon name="star" class="text-orange-500 text-xl"></ion-icon>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-1">25</h3>
+                        <p class="text-gray-500 text-xs">Mahir</p>
+                    </div>
+                    
+                    <!-- Terampil -->
+                    <div class="stat-card bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-yellow-100 flex items-center justify-center mb-3">
+                            <ion-icon name="hammer" class="text-yellow-600 text-xl"></ion-icon>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-1">32</h3>
+                        <p class="text-gray-500 text-xs">Terampil</p>
+                    </div>
+                    
+                    <!-- Ahli Pertama -->
+                    <div class="stat-card bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-cyan-100 flex items-center justify-center mb-3">
+                            <ion-icon name="school" class="text-cyan-500 text-xl"></ion-icon>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-1">28</h3>
+                        <p class="text-gray-500 text-xs">Ahli Pertama</p>
+                    </div>
+                    
+                    <!-- Ahli Muda -->
+                    <div class="stat-card bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-blue-100 flex items-center justify-center mb-3">
+                            <ion-icon name="medal" class="text-blue-500 text-xl"></ion-icon>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-1">35</h3>
+                        <p class="text-gray-500 text-xs">Ahli Muda</p>
+                    </div>
+                    
+                    <!-- Ahli Madya -->
+                    <div class="stat-card bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-indigo-100 flex items-center justify-center mb-3">
+                            <ion-icon name="trophy" class="text-indigo-500 text-xl"></ion-icon>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-1">18</h3>
+                        <p class="text-gray-500 text-xs">Ahli Madya</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Tendik per Unit -->
+                <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                        <h3 class="font-bold text-gray-800">Tendik per Unit Kerja</h3>
+                        <a href="#" class="text-sm text-persian-blue-500 hover:text-persian-blue-600 font-medium">Lihat Semua</a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Unit Kerja</th>
+                                    <th class="text-center py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">PLP</th>
+                                    <th class="text-center py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Pranata</th>
+                                    <th class="text-center py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Pustakawan</th>
+                                    <th class="text-center py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-4 px-6">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-lg bg-persian-blue-100 flex items-center justify-center mr-3">
+                                                <ion-icon name="business" class="text-persian-blue-500"></ion-icon>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-800 text-sm">Fakultas Teknik</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 text-sm text-center font-semibold text-gray-600">15</td>
+                                    <td class="py-4 px-6 text-sm text-center font-semibold text-gray-600">12</td>
+                                    <td class="py-4 px-6 text-sm text-center font-semibold text-gray-600">5</td>
+                                    <td class="py-4 px-6 text-center">
+                                        <span class="px-3 py-1 text-sm font-bold bg-persian-blue-100 text-persian-blue-600 rounded-full">32</span>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-4 px-6">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center mr-3">
+                                                <ion-icon name="business" class="text-emerald-500"></ion-icon>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-800 text-sm">Fakultas MIPA</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 text-sm text-center font-semibold text-gray-600">18</td>
+                                    <td class="py-4 px-6 text-sm text-center font-semibold text-gray-600">8</td>
+                                    <td class="py-4 px-6 text-sm text-center font-semibold text-gray-600">6</td>
+                                    <td class="py-4 px-6 text-center">
+                                        <span class="px-3 py-1 text-sm font-bold bg-emerald-100 text-emerald-600 rounded-full">32</span>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-4 px-6">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-lg bg-violet-100 flex items-center justify-center mr-3">
+                                                <ion-icon name="business" class="text-violet-500"></ion-icon>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-800 text-sm">UPT Perpustakaan</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 text-sm text-center font-semibold text-gray-600">2</td>
+                                    <td class="py-4 px-6 text-sm text-center font-semibold text-gray-600">5</td>
+                                    <td class="py-4 px-6 text-sm text-center font-semibold text-gray-600">28</td>
+                                    <td class="py-4 px-6 text-center">
+                                        <span class="px-3 py-1 text-sm font-bold bg-violet-100 text-violet-600 rounded-full">35</span>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="py-4 px-6">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center mr-3">
+                                                <ion-icon name="business" class="text-amber-500"></ion-icon>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-800 text-sm">UPT TIK</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 text-sm text-center font-semibold text-gray-600">3</td>
+                                    <td class="py-4 px-6 text-sm text-center font-semibold text-gray-600">17</td>
+                                    <td class="py-4 px-6 text-sm text-center font-semibold text-gray-600">2</td>
+                                    <td class="py-4 px-6 text-center">
+                                        <span class="px-3 py-1 text-sm font-bold bg-amber-100 text-amber-600 rounded-full">22</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Right Sidebar -->
+                <div class="space-y-6">
+                    <!-- Quick Actions -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                        <h3 class="font-bold text-gray-800 mb-4">Aksi Cepat</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button class="flex flex-col items-center p-4 rounded-xl bg-persian-blue-50 hover:bg-persian-blue-100 transition-colors group">
+                                <div class="w-12 h-12 rounded-xl bg-persian-blue-500 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                    <ion-icon name="person-add" class="text-white text-2xl"></ion-icon>
+                                </div>
+                                <span class="text-xs font-medium text-gray-700 text-center">Tambah Tendik</span>
+                            </button>
+                            <button class="flex flex-col items-center p-4 rounded-xl bg-emerald-50 hover:bg-emerald-100 transition-colors group">
+                                <div class="w-12 h-12 rounded-xl bg-emerald-500 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                    <ion-icon name="settings" class="text-white text-2xl"></ion-icon>
+                                </div>
+                                <span class="text-xs font-medium text-gray-700 text-center">Master Data</span>
+                            </button>
+                            <button class="flex flex-col items-center p-4 rounded-xl bg-amber-50 hover:bg-amber-100 transition-colors group">
+                                <div class="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                    <ion-icon name="people" class="text-white text-2xl"></ion-icon>
+                                </div>
+                                <span class="text-xs font-medium text-gray-700 text-center">Kelola User</span>
+                            </button>
+                            <button class="flex flex-col items-center p-4 rounded-xl bg-violet-50 hover:bg-violet-100 transition-colors group">
+                                <div class="w-12 h-12 rounded-xl bg-violet-500 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
+                                    <ion-icon name="download" class="text-white text-2xl"></ion-icon>
+                                </div>
+                                <span class="text-xs font-medium text-gray-700 text-center">Unduh Laporan</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Distribusi Jenis Tendik Chart -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                        <h3 class="font-bold text-gray-800 mb-4">Distribusi Jenis Tendik</h3>
+                        <div class="space-y-4">
+                            <!-- PLP -->
+                            <div>
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="text-gray-600">PLP</span>
+                                    <span class="font-semibold text-gray-800">59 (38%)</span>
+                                </div>
+                                <div class="h-3 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full" style="width: 38%"></div>
+                                </div>
+                            </div>
+                            <!-- Pranata Komputer -->
+                            <div>
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="text-gray-600">Pranata Komputer</span>
+                                    <span class="font-semibold text-gray-800">42 (27%)</span>
+                                </div>
+                                <div class="h-3 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-violet-400 to-violet-600 rounded-full" style="width: 27%"></div>
+                                </div>
+                            </div>
+                            <!-- Pustakawan -->
+                            <div>
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="text-gray-600">Pustakawan</span>
+                                    <span class="font-semibold text-gray-800">55 (35%)</span>
+                                </div>
+                                <div class="h-3 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full" style="width: 35%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-100 py-6 px-4 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between text-sm text-gray-500">
+                <p>&copy; 2024 Sistem Penilaian Angka Kredit Tendik. All rights reserved.</p>
+                <p class="mt-2 md:mt-0">Version 1.0.0</p>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Toggle Sidebar (Mobile)
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('active');
+        }
+        
+        // Toggle Sidebar (Desktop)
+        function toggleSidebarDesktop() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            sidebar.classList.toggle('collapsed');
+            
+            if (sidebar.classList.contains('collapsed')) {
+                mainContent.style.marginLeft = '80px';
+                // Close all submenus when sidebar is collapsed
+                document.querySelectorAll('.submenu').forEach(submenu => {
+                    submenu.classList.remove('open');
+                });
+                document.querySelectorAll('.submenu-arrow').forEach(arrow => {
+                    arrow.style.transform = '';
+                });
+            } else {
+                mainContent.style.marginLeft = '';
+            }
+        }
+        
+        // Toggle Submenu - Improved Version
+        function toggleSubmenu(submenuId, button) {
+            const clickedSubmenu = document.getElementById(submenuId);
+            const clickedArrow = button.querySelector('.submenu-arrow');
+            const isOpening = !clickedSubmenu.classList.contains('open');
+            
+            // Close all other submenus first
+            document.querySelectorAll('.submenu').forEach(submenu => {
+                if (submenu.id !== submenuId) {
+                    submenu.classList.remove('open');
+                    // Reset arrow rotation for other submenus
+                    const parentButton = submenu.previousElementSibling;
+                    if (parentButton) {
+                        const arrow = parentButton.querySelector('.submenu-arrow');
+                        if (arrow) {
+                            arrow.style.transform = '';
+                        }
+                    }
+                }
+            });
+            
+            // Toggle the clicked submenu
+            clickedSubmenu.classList.toggle('open');
+            clickedArrow.style.transform = clickedSubmenu.classList.contains('open') ? 'rotate(180deg)' : '';
+            
+            // Add/remove active class to parent button
+            if (isOpening) {
+                button.classList.add('bg-persian-blue-50');
+            } else {
+                button.classList.remove('bg-persian-blue-50');
+            }
+        }
+        
+        // Set Active Menu Item
+        function setActiveMenu(clickedElement) {
+            // Remove active class from all menu items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked element
+            clickedElement.classList.add('active');
+            
+            // Update icon color
+            const icon = clickedElement.querySelector('.menu-icon');
+            document.querySelectorAll('.menu-icon').forEach(i => {
+                i.classList.remove('text-persian-blue-500');
+                i.classList.add('text-gray-400');
+            });
+            if (icon) {
+                icon.classList.remove('text-gray-400');
+                icon.classList.add('text-persian-blue-500');
+            }
+        }
+        
+        // Add click event listeners to menu items (for visual feedback before navigation)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Main menu items - allow navigation, just update visual state
+            document.querySelectorAll('nav > a.menu-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Don't prevent default - allow link navigation
+                    setActiveMenu(this);
+                });
+            });
+            
+            // Submenu items - allow navigation, just update visual state
+            document.querySelectorAll('.submenu a').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Don't prevent default - allow link navigation
+                    
+                    // Remove active from all items including main menu
+                    document.querySelectorAll('.menu-item').forEach(menuItem => {
+                        menuItem.classList.remove('active');
+                    });
+                    document.querySelectorAll('.submenu a').forEach(subItem => {
+                        subItem.classList.remove('bg-persian-blue-50', 'text-persian-blue-600');
+                    });
+                    
+                    // Add active style to clicked submenu item
+                    this.classList.add('bg-persian-blue-50', 'text-persian-blue-600');
+                    
+                    // Also highlight parent menu button
+                    const parentSubmenu = this.closest('.submenu');
+                    const parentButton = parentSubmenu.previousElementSibling;
+                    if (parentButton) {
+                        const parentIcon = parentButton.querySelector('.menu-icon');
+                        if (parentIcon) {
+                            parentIcon.classList.remove('text-gray-400');
+                            parentIcon.classList.add('text-persian-blue-500');
+                        }
+                    }
+                });
+            });
+        });
+        
+        // Toggle Profile Dropdown
+        function toggleProfileMenu() {
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('profileDropdown');
+            const profileButton = event.target.closest('button[onclick="toggleProfileMenu()"]');
+            
+            if (!profileButton && !dropdown.classList.contains('hidden')) {
+                dropdown.classList.add('hidden');
+            }
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (window.innerWidth >= 1024) {
+                // Desktop
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('active');
+                
+                if (!sidebar.classList.contains('collapsed')) {
+                    mainContent.style.marginLeft = '';
+                }
+            } else {
+                // Mobile
+                if (!sidebar.classList.contains('-translate-x-full')) {
+                    overlay.classList.add('active');
+                }
+                mainContent.style.marginLeft = '';
+                sidebar.classList.remove('collapsed');
+            }
+        });
+    </script>
+</body>
+</html>

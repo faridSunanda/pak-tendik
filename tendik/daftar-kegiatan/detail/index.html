@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistem Penilaian Angka Kredit Tendik</title>
+
+    <!-- icon -->
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'persian-blue': {
+                            '50': '#e9f4ff',
+                            '100': '#d7ecff',
+                            '200': '#b7d9ff',
+                            '300': '#8bbfff',
+                            '400': '#5e95ff',
+                            '500': '#396dff',
+                            '600': '#1740ff',
+                            '700': '#1f42f6',
+                            '800': '#0e2fc5',
+                            '900': '#15309a',
+                            '950': '#0d1a59',
+                        },
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Sidebar Transition */
+        .sidebar {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .sidebar.collapsed {
+            width: 80px;
+        }
+        
+        .sidebar.collapsed .menu-text,
+        .sidebar.collapsed .logo-text,
+        .sidebar.collapsed .submenu {
+            display: none;
+        }
+        
+        .sidebar.collapsed .menu-item {
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        
+        .sidebar.collapsed .menu-icon {
+            margin-right: 0;
+        }
+        
+        /* Main Content Transition */
+        .main-content {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        /* Submenu Animation */
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+        
+        .submenu.open {
+            max-height: 500px;
+        }
+        
+        /* Overlay for Mobile */
+        .sidebar-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Card Hover Effect */
+        .stat-card {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        
+        /* Active Menu Item */
+        .menu-item.active {
+            background: linear-gradient(135deg, rgba(57, 109, 255, 0.15) 0%, rgba(31, 66, 246, 0.1) 100%);
+            border-left: 3px solid #396dff;
+        }
+        
+        .menu-item.active .menu-icon,
+        .menu-item.active .menu-text {
+            color: #1f42f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Sidebar Overlay (Mobile) -->
+    <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/50 z-40 lg:hidden" onclick="toggleSidebar()"></div>
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar fixed left-0 top-0 h-full w-72 bg-white shadow-xl z-50 flex flex-col -translate-x-full lg:translate-x-0">
+        <!-- Logo Section -->
+        <div class="p-6 border-b border-gray-100">
+            <div class="flex items-center space-x-3">
+                <img src="/image/logo.png" alt="Logo" class="w-full h-full object-contain">
+            </div>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+            <!-- Dashboard -->
+            <a href="/tendik/dashboard/" class="flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-persian-blue-50 transition-all duration-200">
+                <ion-icon name="grid" class="menu-icon text-xl mr-3 text-gray-400"></ion-icon>
+                <span class="menu-text font-medium">Dashboard</span>
+            </a>
+            
+            <!-- Kegiatan -->
+            <div class="menu-group ">
+                <button onclick="toggleSubmenu('kegiatanSubmenu', this)" class=" menu-item w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-600 hover:bg-persian-blue-50 transition-all duration-200">
+                    <div class="flex items-center">
+                        <ion-icon name="document-text" class="menu-icon text-xl mr-3 text-gray-400"></ion-icon>
+                        <span class="menu-text font-medium">Kegiatan</span>
+                    </div>
+                    <ion-icon name="chevron-down" class="menu-text text-gray-400 transition-transform duration-200 submenu-arrow"></ion-icon>
+                </button>
+                <div id="kegiatanSubmenu" class="open submenu ml-6 mt-1 space-y-1">
+                    <a href="/tendik/daftar-kegiatan/" class="menu-item active flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600  text-persian-blue-500 transition-all duration-200">
+                        <ion-icon name="list" class="text-lg mr-3 text-persian-blue-500"></ion-icon>
+                        <span class="text-sm font-medium">Daftar Kegiatan</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Penilaian -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu('penilaianSubmenu', this)" class="menu-item w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-600 hover:bg-persian-blue-50 transition-all duration-200">
+                    <div class="flex items-center">
+                        <ion-icon name="checkmark-circle" class="menu-icon text-xl mr-3 text-gray-400"></ion-icon>
+                        <span class="menu-text font-medium">Penilaian</span>
+                    </div>
+                    <ion-icon name="chevron-down" class="menu-text text-gray-400 transition-transform duration-200 submenu-arrow"></ion-icon>
+                </button>
+                <div id="penilaianSubmenu" class="submenu ml-6 mt-1 space-y-1">
+                    <a href="/tendik/status-ajuan/" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="document-text" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Status Ajuan</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </aside>
+    
+    <!-- Main Content Area -->
+    <div id="mainContent" class="main-content lg:ml-72">
+        <!-- Top Navbar -->
+        <header class="bg-white shadow-sm sticky top-0 z-30">
+            <div class="flex items-center justify-between px-4 lg:px-8 py-4">
+                <!-- Left Section -->
+                <div class="flex items-center space-x-4">
+                    <!-- Mobile Menu Toggle -->
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors">
+                        <ion-icon name="menu" class="text-2xl text-gray-600"></ion-icon>
+                    </button>
+                    
+                    <!-- Desktop Sidebar Toggle -->
+                    <button onclick="toggleSidebarDesktop()" class="hidden lg:flex p-2 rounded-xl hover:bg-gray-100 transition-colors">
+                        <ion-icon name="menu" class="text-2xl text-gray-600"></ion-icon>
+                    </button>
+                    
+                    <!-- Page Title -->
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-800">Detail Kegiatan</h1>
+                        <p class="text-sm text-gray-500 hidden sm:block">Detail Kegiatan</p>
+                    </div>
+                </div>
+                
+                <!-- Right Section -->
+                <div class="flex items-center space-x-3">
+                    <!-- Search (Desktop) -->
+                    <div class="hidden md:flex items-center bg-gray-100 rounded-xl px-4 py-2.5">
+                        <ion-icon name="search" class="text-gray-400 mr-2"></ion-icon>
+                        <input type="text" placeholder="Cari..." class="bg-transparent border-none outline-none text-sm text-gray-600 w-48">
+                    </div>
+                    
+                    <!-- Notifications -->
+                    <button class="relative p-2.5 rounded-xl hover:bg-gray-100 transition-colors">
+                        <ion-icon name="notifications" class="text-xl text-gray-600"></ion-icon>
+                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                    </button>
+                    
+                    <!-- Profile Dropdown -->
+                    <div class="relative">
+                        <button onclick="toggleProfileMenu()" class="flex items-center space-x-2 p-1.5 rounded-xl hover:bg-gray-100 transition-colors">
+                            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-persian-blue-400 to-persian-blue-600 flex items-center justify-center text-white font-semibold text-sm">
+                                T
+                            </div>
+                            <ion-icon name="chevron-down" class="text-gray-400 hidden sm:block"></ion-icon>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="profileDropdown" class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 hidden">
+                            <div class="px-4 py-3 border-b border-gray-100">
+                                <p class="font-semibold text-gray-800">Tendik User</p>
+                                <p class="text-sm text-gray-500">tendik@email.com</p>
+                            </div>
+                            <a href="#" class="flex items-center px-4 py-2.5 text-gray-600 hover:bg-gray-50 transition-colors">
+                                <ion-icon name="arrow-undo-circle-outline" class="mr-3"></ion-icon>
+                                <span class="text-sm">Kembali ke SSO</span>
+                            </a>
+                            <div class="border-t border-gray-100 mt-2 pt-2">
+                                <a href="/" class="flex items-center px-4 py-2.5 text-red-500 hover:bg-red-50 transition-colors">
+                                    <ion-icon name="log-out-outline" class="mr-3"></ion-icon>
+                                    <span class="text-sm">Logout</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Page Content -->
+        <main class="p-4 lg:p-8">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <!-- Detail Kegiatan -->
+                <!-- Header Card -->
+                <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-persian-blue-50 to-white">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                                Detail Kegiatan
+                            </h2>
+                            <p class="text-sm text-gray-500 mt-1">Daftar kegiatan yang telah diinput</p>
+                        </div>
+                        <button onclick="tambahKegiatan()" class="inline-flex items-center px-4 py-2.5 bg-gradient-to-r from-persian-blue-500 to-persian-blue-600 text-white text-sm font-medium rounded-xl hover:from-persian-blue-600 hover:to-persian-blue-700 transition-all duration-200 shadow-lg shadow-persian-blue-500/25">
+                            <ion-icon name="add-circle" class="text-lg mr-2"></ion-icon>
+                            Tambah Kegiatan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-100">
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">No</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Kegiatan</th>
+                                <th class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider w-48">Berkas Bukti</th>
+                                <th class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider w-48">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <!-- Row 1 -->
+                            <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                <td class="px-6 py-4 text-sm text-gray-600 font-medium">1</td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm font-medium text-gray-800">Mengikuti Pelatihan Administrasi Kepegawaian</div>
+                                    <p class="text-xs text-gray-500 mt-1">Tanggal: 15 Oktober 2025</p>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="#" class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-600 text-xs font-medium rounded-lg hover:bg-red-100 transition-colors">
+                                        <ion-icon name="document" class="mr-1.5"></ion-icon>
+                                        Sertifikat.pdf
+                                    </a>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button onclick="lihatKegiatan(1)" class="p-2 text-persian-blue-500 hover:bg-persian-blue-50 rounded-lg transition-colors" title="Lihat">
+                                            <ion-icon name="eye" class="text-lg"></ion-icon>
+                                        </button>
+                                        <button onclick="editKegiatan(1)" class="p-2 text-amber-500 hover:bg-amber-50 rounded-lg transition-colors" title="Edit">
+                                            <ion-icon name="create" class="text-lg"></ion-icon>
+                                        </button>
+                                        <button onclick="hapusKegiatan(1)" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Hapus">
+                                            <ion-icon name="trash" class="text-lg"></ion-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Row 2 -->
+                            <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                <td class="px-6 py-4 text-sm text-gray-600 font-medium">2</td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm font-medium text-gray-800">Menyusun Laporan Keuangan Bulanan</div>
+                                    <p class="text-xs text-gray-500 mt-1">Tanggal: 20 Oktober 2025</p>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="#" class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-600 text-xs font-medium rounded-lg hover:bg-red-100 transition-colors">
+                                        <ion-icon name="document" class="mr-1.5"></ion-icon>
+                                        Laporan.pdf
+                                    </a>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button onclick="lihatKegiatan(2)" class="p-2 text-persian-blue-500 hover:bg-persian-blue-50 rounded-lg transition-colors" title="Lihat">
+                                            <ion-icon name="eye" class="text-lg"></ion-icon>
+                                        </button>
+                                        <button onclick="editKegiatan(2)" class="p-2 text-amber-500 hover:bg-amber-50 rounded-lg transition-colors" title="Edit">
+                                            <ion-icon name="create" class="text-lg"></ion-icon>
+                                        </button>
+                                        <button onclick="hapusKegiatan(2)" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Hapus">
+                                            <ion-icon name="trash" class="text-lg"></ion-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Row 3 -->
+                            <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                <td class="px-6 py-4 text-sm text-gray-600 font-medium">3</td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm font-medium text-gray-800">Melaksanakan Pelayanan Mahasiswa</div>
+                                    <p class="text-xs text-gray-500 mt-1">Tanggal: 25 Oktober 2025</p>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="#" class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-600 text-xs font-medium rounded-lg hover:bg-red-100 transition-colors">
+                                        <ion-icon name="document" class="mr-1.5"></ion-icon>
+                                        Bukti_Layanan.pdf
+                                    </a>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button onclick="lihatKegiatan(3)" class="p-2 text-persian-blue-500 hover:bg-persian-blue-50 rounded-lg transition-colors" title="Lihat">
+                                            <ion-icon name="eye" class="text-lg"></ion-icon>
+                                        </button>
+                                        <button onclick="editKegiatan(3)" class="p-2 text-amber-500 hover:bg-amber-50 rounded-lg transition-colors" title="Edit">
+                                            <ion-icon name="create" class="text-lg"></ion-icon>
+                                        </button>
+                                        <button onclick="hapusKegiatan(3)" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Hapus">
+                                            <ion-icon name="trash" class="text-lg"></ion-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Row 4 -->
+                            <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                <td class="px-6 py-4 text-sm text-gray-600 font-medium">4</td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm font-medium text-gray-800">Mengikuti Rapat Koordinasi Unit</div>
+                                    <p class="text-xs text-gray-500 mt-1">Tanggal: 28 Oktober 2025</p>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="#" class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-600 text-xs font-medium rounded-lg hover:bg-red-100 transition-colors">
+                                        <ion-icon name="document" class="mr-1.5"></ion-icon>
+                                        Notulen_Rapat.pdf
+                                    </a>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button onclick="lihatKegiatan(4)" class="p-2 text-persian-blue-500 hover:bg-persian-blue-50 rounded-lg transition-colors" title="Lihat">
+                                            <ion-icon name="eye" class="text-lg"></ion-icon>
+                                        </button>
+                                        <button onclick="editKegiatan(4)" class="p-2 text-amber-500 hover:bg-amber-50 rounded-lg transition-colors" title="Edit">
+                                            <ion-icon name="create" class="text-lg"></ion-icon>
+                                        </button>
+                                        <button onclick="hapusKegiatan(4)" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Hapus">
+                                            <ion-icon name="trash" class="text-lg"></ion-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Row 5 -->
+                            <tr class="hover:bg-gray-50 transition-colors duration-150">
+                                <td class="px-6 py-4 text-sm text-gray-600 font-medium">5</td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm font-medium text-gray-800">Mengelola Arsip dan Dokumentasi</div>
+                                    <p class="text-xs text-gray-500 mt-1">Tanggal: 30 Oktober 2025</p>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="#" class="inline-flex items-center px-3 py-1.5 bg-red-50 text-red-600 text-xs font-medium rounded-lg hover:bg-red-100 transition-colors">
+                                        <ion-icon name="document" class="mr-1.5"></ion-icon>
+                                        Bukti_Arsip.pdf
+                                    </a>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button onclick="lihatKegiatan(5)" class="p-2 text-persian-blue-500 hover:bg-persian-blue-50 rounded-lg transition-colors" title="Lihat">
+                                            <ion-icon name="eye" class="text-lg"></ion-icon>
+                                        </button>
+                                        <button onclick="editKegiatan(5)" class="p-2 text-amber-500 hover:bg-amber-50 rounded-lg transition-colors" title="Edit">
+                                            <ion-icon name="create" class="text-lg"></ion-icon>
+                                        </button>
+                                        <button onclick="hapusKegiatan(5)" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Hapus">
+                                            <ion-icon name="trash" class="text-lg"></ion-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Empty State (Hidden by default) -->
+                <div id="emptyState" class="hidden px-6 py-16 text-center">
+                    <div class="w-20 h-20 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                        <ion-icon name="document-text-outline" class="text-4xl text-gray-400"></ion-icon>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-700">Belum Ada Kegiatan</h3>
+                    <p class="text-sm text-gray-500 mt-2">Klik tombol "Tambah Kegiatan" untuk menambahkan kegiatan baru</p>
+                </div>
+
+                <!-- Pagination -->
+                <div class="px-6 py-4 border-t border-gray-100 bg-gray-50/50">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <p class="text-sm text-gray-600">
+                            Menampilkan <span class="font-semibold">1-5</span> dari <span class="font-semibold">5</span> kegiatan
+                        </p>
+                        <div class="flex items-center gap-2">
+                            <button class="px-3 py-2 text-sm text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50" disabled>
+                                <ion-icon name="chevron-back"></ion-icon>
+                            </button>
+                            <button class="px-3.5 py-2 text-sm font-medium text-white bg-persian-blue-500 rounded-lg">1</button>
+                            <button class="px-3 py-2 text-sm text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50" disabled>
+                                <ion-icon name="chevron-forward"></ion-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-100 py-6 px-4 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between text-sm text-gray-500">
+                <p>&copy; 2025 Sistem Penilaian Angka Kredit Tendik. All rights reserved.</p>
+                <p class="mt-2 md:mt-0">Version 1.0.0</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal Tambah Kegiatan -->
+    <div id="modalTambahKegiatan" class="fixed inset-0 z-[60] hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeModalTambah()"></div>
+        
+        <!-- Modal Content -->
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95 opacity-0" id="modalContent">
+                <!-- Modal Header -->
+                <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-persian-blue-50 to-white rounded-t-2xl">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-persian-blue-500 to-persian-blue-600 flex items-center justify-center shadow-lg shadow-persian-blue-500/30">
+                                <ion-icon name="add-circle" class="text-xl text-white"></ion-icon>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">Tambah Kegiatan</h3>
+                                <p class="text-xs text-gray-500">Isi form untuk menambahkan kegiatan baru</p>
+                            </div>
+                        </div>
+                        <button onclick="closeModalTambah()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                            <ion-icon name="close" class="text-xl text-gray-500"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Modal Body -->
+                <form id="formTambahKegiatan" class="p-6 space-y-5">
+                    <!-- Nama Kegiatan -->
+                    <div class="space-y-2">
+                        <label for="namaKegiatan" class="block text-sm font-medium text-gray-700">
+                            Nama Kegiatan <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <ion-icon name="document-text-outline" class="text-gray-400"></ion-icon>
+                            </div>
+                            <input type="text" id="namaKegiatan" name="namaKegiatan" required
+                                class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-persian-blue-500/20 focus:border-persian-blue-500 transition-all duration-200 outline-none"
+                                placeholder="Masukkan nama kegiatan...">
+                        </div>
+                    </div>
+                    
+                    <!-- Tanggal Kegiatan -->
+                    <div class="space-y-2">
+                        <label for="tanggalKegiatan" class="block text-sm font-medium text-gray-700">
+                            Tanggal Kegiatan <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <ion-icon name="calendar-outline" class="text-gray-400"></ion-icon>
+                            </div>
+                            <input type="date" id="tanggalKegiatan" name="tanggalKegiatan" required
+                                class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-persian-blue-500/20 focus:border-persian-blue-500 transition-all duration-200 outline-none">
+                        </div>
+                    </div>
+                    
+                    <!-- Upload Berkas Bukti -->
+                    <div class="space-y-2">
+                        <label for="berkasBukti" class="block text-sm font-medium text-gray-700">
+                            Berkas Bukti (PDF) <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="file" id="berkasBukti" name="berkasBukti" accept=".pdf" required
+                                class="hidden" onchange="updateFileName(this)">
+                            <label for="berkasBukti" 
+                                class="flex items-center justify-center gap-3 w-full px-4 py-8 border-2 border-dashed border-gray-200 rounded-xl cursor-pointer hover:border-persian-blue-400 hover:bg-persian-blue-50/50 transition-all duration-200 group">
+                                <div class="text-center">
+                                    <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-persian-blue-100 transition-colors">
+                                        <ion-icon name="cloud-upload-outline" class="text-2xl text-gray-400 group-hover:text-persian-blue-500"></ion-icon>
+                                    </div>
+                                    <p class="text-sm font-medium text-gray-600 group-hover:text-persian-blue-600" id="fileNameDisplay">
+                                        Klik untuk upload file PDF
+                                    </p>
+                                    <p class="text-xs text-gray-400 mt-1">Maksimal 10MB</p>
+                                </div>
+                            </label>
+                        </div>
+                        <!-- File Info -->
+                        <div id="fileInfo" class="hidden flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+                            <div class="flex items-center gap-2">
+                                <ion-icon name="document" class="text-green-600"></ion-icon>
+                                <span class="text-sm text-green-700 font-medium" id="selectedFileName">filename.pdf</span>
+                            </div>
+                            <button type="button" onclick="removeFile()" class="p-1 text-green-600 hover:bg-green-100 rounded transition-colors">
+                                <ion-icon name="close-circle" class="text-lg"></ion-icon>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                
+                <!-- Modal Footer -->
+                <div class="px-6 py-4 border-t border-gray-100 bg-gray-50/50 rounded-b-2xl flex items-center justify-end gap-3">
+                    <button onclick="closeModalTambah()" class="px-5 py-2.5 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
+                        Batal
+                    </button>
+                    <button onclick="simpanKegiatan()" class="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-persian-blue-500 to-persian-blue-600 text-white text-sm font-medium rounded-xl hover:from-persian-blue-600 hover:to-persian-blue-700 transition-all duration-200 shadow-lg shadow-persian-blue-500/25">
+                        <ion-icon name="checkmark-circle" class="text-lg mr-2"></ion-icon>
+                        Simpan Kegiatan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Toggle Sidebar (Mobile)
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('active');
+        }
+        
+        // Toggle Sidebar (Desktop)
+        function toggleSidebarDesktop() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            sidebar.classList.toggle('collapsed');
+            
+            if (sidebar.classList.contains('collapsed')) {
+                mainContent.style.marginLeft = '80px';
+            } else {
+                mainContent.style.marginLeft = '';
+            }
+        }
+        
+        // Toggle Submenu
+        function toggleSubmenu(submenuId, button) {
+            const submenu = document.getElementById(submenuId);
+            const arrow = button.querySelector('.submenu-arrow');
+            
+            submenu.classList.toggle('open');
+            arrow.style.transform = submenu.classList.contains('open') ? 'rotate(180deg)' : '';
+        }
+        
+        // Toggle Profile Dropdown
+        function toggleProfileMenu() {
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('profileDropdown');
+            const profileButton = event.target.closest('button[onclick="toggleProfileMenu()"]');
+            
+            if (!profileButton && !dropdown.classList.contains('hidden')) {
+                dropdown.classList.add('hidden');
+            }
+        });
+        
+        // Kegiatan Actions
+        function tambahKegiatan() {
+            const modal = document.getElementById('modalTambahKegiatan');
+            const modalContent = document.getElementById('modalContent');
+            
+            modal.classList.remove('hidden');
+            
+            // Animate modal
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModalTambah() {
+            const modal = document.getElementById('modalTambahKegiatan');
+            const modalContent = document.getElementById('modalContent');
+            
+            // Animate out
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                // Reset form
+                document.getElementById('formTambahKegiatan').reset();
+                removeFile();
+            }, 200);
+            
+            // Enable body scroll
+            document.body.style.overflow = '';
+        }
+
+        function updateFileName(input) {
+            const fileInfo = document.getElementById('fileInfo');
+            const selectedFileName = document.getElementById('selectedFileName');
+            const uploadLabel = input.nextElementSibling;
+            
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                
+                // Check file size (max 10MB)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('Ukuran file maksimal 10MB!');
+                    input.value = '';
+                    return;
+                }
+                
+                // Check file type
+                if (!file.name.toLowerCase().endsWith('.pdf')) {
+                    alert('Hanya file PDF yang diperbolehkan!');
+                    input.value = '';
+                    return;
+                }
+                
+                selectedFileName.textContent = file.name;
+                fileInfo.classList.remove('hidden');
+                uploadLabel.classList.add('hidden');
+            }
+        }
+
+        function removeFile() {
+            const fileInput = document.getElementById('berkasBukti');
+            const fileInfo = document.getElementById('fileInfo');
+            const uploadLabel = document.querySelector('label[for="berkasBukti"]');
+            
+            fileInput.value = '';
+            fileInfo.classList.add('hidden');
+            if (uploadLabel) {
+                uploadLabel.classList.remove('hidden');
+            }
+        }
+
+        function simpanKegiatan() {
+            const form = document.getElementById('formTambahKegiatan');
+            const namaKegiatan = document.getElementById('namaKegiatan').value;
+            const tanggalKegiatan = document.getElementById('tanggalKegiatan').value;
+            const berkasBukti = document.getElementById('berkasBukti').files[0];
+            
+            // Validation
+            if (!namaKegiatan.trim()) {
+                alert('Nama kegiatan harus diisi!');
+                document.getElementById('namaKegiatan').focus();
+                return;
+            }
+            
+            if (!tanggalKegiatan) {
+                alert('Tanggal kegiatan harus diisi!');
+                document.getElementById('tanggalKegiatan').focus();
+                return;
+            }
+            
+            if (!berkasBukti) {
+                alert('Berkas bukti harus diupload!');
+                return;
+            }
+            
+            // Simulate save
+            alert('Kegiatan berhasil disimpan!\n\nNama: ' + namaKegiatan + '\nTanggal: ' + tanggalKegiatan + '\nBerkas: ' + berkasBukti.name);
+            
+            closeModalTambah();
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('modalTambahKegiatan');
+                if (!modal.classList.contains('hidden')) {
+                    closeModalTambah();
+                }
+            }
+        });
+
+        function lihatKegiatan(id) {
+            alert('Melihat detail kegiatan ID: ' + id);
+        }
+
+        function editKegiatan(id) {
+            alert('Mengedit kegiatan ID: ' + id);
+        }
+
+        function hapusKegiatan(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus kegiatan ini?')) {
+                alert('Kegiatan ID ' + id + ' berhasil dihapus!');
+            }
+        }
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (window.innerWidth >= 1024) {
+                // Desktop
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('active');
+                
+                if (!sidebar.classList.contains('collapsed')) {
+                    mainContent.style.marginLeft = '';
+                }
+            } else {
+                // Mobile
+                if (!sidebar.classList.contains('-translate-x-full')) {
+                    overlay.classList.add('active');
+                }
+                mainContent.style.marginLeft = '';
+                sidebar.classList.remove('collapsed');
+            }
+        });
+    </script>
+</body>
+</html>

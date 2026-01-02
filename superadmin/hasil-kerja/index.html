@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Kerja - Sistem Penilaian Angka Kredit Tendik</title>
+
+    <!-- icon -->
+    <link rel="icon" type="image/png" href="/image/favicon.png">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'persian-blue': {
+                            '50': '#e9f4ff',
+                            '100': '#d7ecff',
+                            '200': '#b7d9ff',
+                            '300': '#8bbfff',
+                            '400': '#5e95ff',
+                            '500': '#396dff',
+                            '600': '#1740ff',
+                            '700': '#1f42f6',
+                            '800': '#0e2fc5',
+                            '900': '#15309a',
+                            '950': '#0d1a59',
+                        },
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Sidebar Transition */
+        .sidebar {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .sidebar.collapsed {
+            width: 80px;
+        }
+        
+        .sidebar.collapsed .menu-text,
+        .sidebar.collapsed .logo-text,
+        .sidebar.collapsed .submenu {
+            display: none;
+        }
+        
+        .sidebar.collapsed .menu-item {
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        
+        .sidebar.collapsed .menu-icon {
+            margin-right: 0;
+        }
+        
+        /* Main Content Transition */
+        .main-content {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        /* Submenu Animation */
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+        
+        .submenu.open {
+            max-height: 500px;
+        }
+        
+        /* Overlay for Mobile */
+        .sidebar-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Card Hover Effect */
+        .stat-card {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        
+        /* Active Menu Item */
+        .menu-item.active {
+            background: linear-gradient(135deg, rgba(57, 109, 255, 0.15) 0%, rgba(31, 66, 246, 0.1) 100%);
+            border-left: 3px solid #396dff;
+        }
+        
+        .menu-item.active .menu-icon,
+        .menu-item.active .menu-text {
+            color: #1f42f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Sidebar Overlay (Mobile) -->
+    <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/50 z-40 lg:hidden" onclick="toggleSidebar()"></div>
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar fixed left-0 top-0 h-full w-72 bg-white shadow-xl z-50 flex flex-col -translate-x-full lg:translate-x-0">
+        <!-- Logo Section -->
+        <div class="p-6 border-b border-gray-100">
+            <div class="flex items-center space-x-3">
+                <img src="/image/logo.png" alt="Logo" class="w-full h-full object-contain">
+            </div>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+            <!-- Dashboard -->
+            <a href="/superadmin/dashboard/" class="flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-persian-blue-50 transition-all duration-200">
+                <ion-icon name="grid-outline" class="menu-icon text-xl mr-3"></ion-icon>
+                <span class="menu-text font-medium">Dashboard</span>
+            </a>
+            
+            <!-- Master Data -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu('masterDataSubmenu', this)" class="menu-item w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-600 hover:bg-persian-blue-50 transition-all duration-200">
+                    <div class="flex items-center">
+                        <ion-icon name="server-outline" class="menu-icon text-xl mr-3 text-gray-400"></ion-icon>
+                        <span class="menu-text font-medium">Master Data</span>
+                    </div>
+                    <ion-icon name="chevron-down-outline" class="menu-text text-gray-400 transition-transform duration-200 submenu-arrow"></ion-icon>
+                </button>
+                <div id="masterDataSubmenu" class="open submenu ml-6 mt-1 space-y-1">
+                    <a href="/superadmin/jabatan-tendik" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="briefcase-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Jabatan Tendik</span>
+                    </a>
+                    <a href="/superadmin/tingkat-tendik" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="layers-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Tingkat Tendik</span>
+                    </a>
+                    <a href="/superadmin/jenjang-tendik" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="trophy-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Jenjang Tendik</span>
+                    </a>
+                    <a href="/superadmin/kategori-kegiatan" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="pricetags-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Kategori Kegiatan</span>
+                    </a>
+                    <a href="/superadmin/kelompok-kegiatan" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="folder-open-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Kelompok Kegiatan</span>
+                    </a>
+                    <a href="/superadmin/sub-kelompok-kegiatan" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="git-branch-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Sub Kelompok Kegiatan</span>
+                    </a>
+                    <a href="/superadmin/hasil-kerja" class="menu-item active flex items-center px-4 py-2.5 rounded-lg text-gray-500 bg-persian-blue-50 hover:text-persian-blue-600 text-persian-blue-500 transition-all duration-200">
+                        <ion-icon name="clipboard-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Hasil Kerja</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Kegiatan Tendik -->
+            <a href="/superadmin/kegiatan-tendik" class="menu-item flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-persian-blue-50 transition-all duration-200">
+                <ion-icon name="document-text-outline" class="menu-icon text-xl mr-3 text-gray-400"></ion-icon>
+                <span class="menu-text font-medium">Kegiatan Tendik</span>
+            </a>
+            
+            <!-- Manajemen User -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu('userManagementSubmenu', this)" class="menu-item w-full flex items-center justify-between px-4 py-3 rounded-xl text-gray-600 hover:bg-persian-blue-50 transition-all duration-200">
+                    <div class="flex items-center">
+                        <ion-icon name="people-outline" class="menu-icon text-xl mr-3 text-gray-400"></ion-icon>
+                        <span class="menu-text font-medium">Manajemen User</span>
+                    </div>
+                    <ion-icon name="chevron-down-outline" class="menu-text text-gray-400 transition-transform duration-200 submenu-arrow"></ion-icon>
+                </button>
+                <div id="userManagementSubmenu" class="submenu ml-6 mt-1 space-y-1">
+                    <a href="#" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="person-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Daftar User</span>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                        <ion-icon name="shield-checkmark-outline" class="text-lg mr-3"></ion-icon>
+                        <span class="text-sm font-medium">Log Aktivitas</span>
+                    </a>
+                </div>
+            </div>
+            
+        </nav>
+    </aside>
+    
+    <!-- Main Content Area -->
+    <div id="mainContent" class="main-content lg:ml-72">
+        <!-- Top Navbar -->
+        <header class="bg-white shadow-sm sticky top-0 z-30">
+            <div class="flex items-center justify-between px-4 lg:px-8 py-4">
+                <!-- Left Section -->
+                <div class="flex items-center space-x-4">
+                    <!-- Mobile Menu Toggle -->
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors">
+                        <ion-icon name="menu" class="text-2xl text-gray-600"></ion-icon>
+                    </button>
+                    
+                    <!-- Desktop Sidebar Toggle -->
+                    <button onclick="toggleSidebarDesktop()" class="hidden lg:flex p-2 rounded-xl hover:bg-gray-100 transition-colors">
+                        <ion-icon name="menu" class="text-2xl text-gray-600"></ion-icon>
+                    </button>
+                    
+                    <!-- Page Title -->
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-800">Hasil Kerja</h1>
+                    </div>
+                </div>
+                
+                <!-- Right Section -->
+                <div class="flex items-center space-x-3">
+                    <!-- Search (Desktop) -->
+                    <div class="hidden md:flex items-center bg-gray-100 rounded-xl px-4 py-2.5">
+                        <ion-icon name="search" class="text-gray-400 mr-2"></ion-icon>
+                        <input type="text" placeholder="Cari..." class="bg-transparent border-none outline-none text-sm text-gray-600 w-48">
+                    </div>
+                    
+                    <!-- Notifications -->
+                    <button class="relative p-2.5 rounded-xl hover:bg-gray-100 transition-colors">
+                        <ion-icon name="notifications" class="text-xl text-gray-600"></ion-icon>
+                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                    </button>
+                    
+                    <!-- Profile Dropdown -->
+                    <div class="relative">
+                        <button onclick="toggleProfileMenu()" class="flex items-center space-x-2 p-1.5 rounded-xl hover:bg-gray-100 transition-colors">
+                            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-persian-blue-400 to-persian-blue-600 flex items-center justify-center text-white font-semibold text-sm">
+                                T
+                            </div>
+                            <ion-icon name="chevron-down" class="text-gray-400 hidden sm:block"></ion-icon>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="profileDropdown" class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 hidden">
+                            <div class="px-4 py-3 border-b border-gray-100">
+                                <p class="font-semibold text-gray-800">Super Admin</p>
+                                <p class="text-sm text-gray-500">superadmin@email.com</p>
+                            </div>
+                            <a href="#" class="flex items-center px-4 py-2.5 text-gray-600 hover:bg-gray-50 transition-colors">
+                                <ion-icon name="arrow-undo-circle-outline" class="mr-3"></ion-icon>
+                                <span class="text-sm">Kembali ke SSO</span>
+                            </a>
+                            <div class="border-t border-gray-100 mt-2 pt-2">
+                                <a href="/" class="flex items-center px-4 py-2.5 text-red-500 hover:bg-red-50 transition-colors">
+                                    <ion-icon name="log-out-outline" class="mr-3"></ion-icon>
+                                    <span class="text-sm">Logout</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Page Content -->
+        <main class="p-4 lg:p-8">
+            <!-- Page Header -->
+            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">Master Hasil Kerja</h2>
+                    <p class="text-gray-500 text-sm mt-1">Kelola data hasil kerja tendik</p>
+                </div>
+                <button onclick="openAddModal()" class="inline-flex items-center px-4 py-2.5 bg-gradient-to-r from-persian-blue-500 to-persian-blue-600 text-white font-medium rounded-xl hover:from-persian-blue-600 hover:to-persian-blue-700 transition-all duration-200 shadow-lg shadow-persian-blue-500/30">
+                    <ion-icon name="add-circle-outline" class="text-xl mr-2"></ion-icon>
+                    Tambah Hasil Kerja
+                </button>
+            </div>
+            
+            <!-- Table Card -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <!-- Table Header with Search -->
+                <div class="p-4 lg:p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-500">Tampilkan</span>
+                        <select class="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-persian-blue-500 focus:border-transparent">
+                            <option>10</option>
+                            <option>25</option>
+                            <option>50</option>
+                            <option>100</option>
+                        </select>
+                        <span class="text-sm text-gray-500">data</span>
+                    </div>
+                    <div class="flex items-center bg-gray-100 rounded-xl px-4 py-2.5">
+                        <ion-icon name="search-outline" class="text-gray-400 mr-2"></ion-icon>
+                        <input type="text" placeholder="Cari hasil kerja..." class="bg-transparent border-none outline-none text-sm text-gray-600 w-48">
+                    </div>
+                </div>
+                
+                <!-- Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider w-16">No</th>
+                                <th class="text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Nama Hasil Kerja</th>
+                                <th class="text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Deskripsi</th>
+                                <th class="text-center py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider w-32">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="py-4 px-6 text-sm text-gray-600">1</td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center">
+                                        <span class="font-medium text-gray-800">PLP (Pranata Laboratorium Pendidikan)</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-sm text-gray-500">Tenaga kependidikan yang bertugas mengelola laboratorium pendidikan</td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <button onclick="openEditModal(1)" class="p-2 rounded-lg bg-amber-50 text-amber-500 hover:bg-amber-100 transition-colors" title="Edit">
+                                            <ion-icon name="create-outline" class="text-lg"></ion-icon>
+                                        </button>
+                                        <button onclick="confirmDelete(1)" class="p-2 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition-colors" title="Hapus">
+                                            <ion-icon name="trash-outline" class="text-lg"></ion-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="py-4 px-6 text-sm text-gray-600">2</td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center">
+                                        <span class="font-medium text-gray-800">Pranata Komputer</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-sm text-gray-500">Tenaga kependidikan yang bertugas mengelola sistem informasi dan teknologi</td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <button onclick="openEditModal(2)" class="p-2 rounded-lg bg-amber-50 text-amber-500 hover:bg-amber-100 transition-colors" title="Edit">
+                                            <ion-icon name="create-outline" class="text-lg"></ion-icon>
+                                        </button>
+                                        <button onclick="confirmDelete(2)" class="p-2 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition-colors" title="Hapus">
+                                            <ion-icon name="trash-outline" class="text-lg"></ion-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="py-4 px-6 text-sm text-gray-600">3</td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center">
+                                        <span class="font-medium text-gray-800">Pustakawan</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-sm text-gray-500">Tenaga kependidikan yang bertugas mengelola perpustakaan dan sumber informasi</td>
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <button onclick="openEditModal(3)" class="p-2 rounded-lg bg-amber-50 text-amber-500 hover:bg-amber-100 transition-colors" title="Edit">
+                                            <ion-icon name="create-outline" class="text-lg"></ion-icon>
+                                        </button>
+                                        <button onclick="confirmDelete(3)" class="p-2 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition-colors" title="Hapus">
+                                            <ion-icon name="trash-outline" class="text-lg"></ion-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Table Footer with Pagination -->
+                <div class="p-4 lg:p-6 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <p class="text-sm text-gray-500">Menampilkan 1-5 dari 5 data</p>
+                    <div class="flex items-center space-x-2">
+                        <button class="px-3 py-2 rounded-lg border border-gray-200 text-gray-400 cursor-not-allowed" disabled>
+                            <ion-icon name="chevron-back-outline"></ion-icon>
+                        </button>
+                        <button class="px-4 py-2 rounded-lg bg-persian-blue-500 text-white font-medium">1</button>
+                        <button class="px-3 py-2 rounded-lg border border-gray-200 text-gray-400 cursor-not-allowed" disabled>
+                            <ion-icon name="chevron-forward-outline"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Add/Edit Modal -->
+        <div id="formModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                    <h3 id="modalTitle" class="text-lg font-bold text-gray-800">Tambah Jabatan Tendik</h3>
+                    <button onclick="closeModal()" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <ion-icon name="close-outline" class="text-xl text-gray-500"></ion-icon>
+                    </button>
+                </div>
+                <form id="jabatanForm" class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Nama Jabatan <span class="text-red-500">*</span></label>
+                        <input type="text" id="namaJabatan" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-persian-blue-500 focus:border-transparent transition-all" placeholder="Masukkan nama jabatan" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi</label>
+                        <textarea id="deskripsi" rows="4" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-persian-blue-500 focus:border-transparent transition-all resize-none" placeholder="Masukkan deskripsi jabatan"></textarea>
+                    </div>
+                    <div class="flex items-center justify-end space-x-3 pt-4">
+                        <button type="button" onclick="closeModal()" class="px-5 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-medium hover:bg-gray-50 transition-colors">Batal</button>
+                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-persian-blue-500 to-persian-blue-600 text-white font-medium hover:from-persian-blue-600 hover:to-persian-blue-700 transition-all shadow-lg shadow-persian-blue-500/30">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Delete Confirmation Modal -->
+        <div id="deleteModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md text-center">
+                <div class="p-8">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-red-100 flex items-center justify-center mb-4">
+                        <ion-icon name="trash-outline" class="text-3xl text-red-500"></ion-icon>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Hapus Data?</h3>
+                    <p class="text-gray-500 text-sm mb-6">Apakah Anda yakin ingin menghapus data jabatan ini? Tindakan ini tidak dapat dibatalkan.</p>
+                    <div class="flex items-center justify-center space-x-3">
+                        <button onclick="closeDeleteModal()" class="px-5 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-medium hover:bg-gray-50 transition-colors">Batal</button>
+                        <button onclick="deleteData()" class="px-5 py-2.5 rounded-xl bg-red-500 text-white font-medium hover:bg-red-600 transition-colors">Ya, Hapus</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-100 py-6 px-4 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between text-sm text-gray-500">
+                <p>&copy; 2024 Sistem Penilaian Angka Kredit Tendik. All rights reserved.</p>
+                <p class="mt-2 md:mt-0">Version 1.0.0</p>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Toggle Sidebar (Mobile)
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('active');
+        }
+        
+        // Toggle Sidebar (Desktop)
+        function toggleSidebarDesktop() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            sidebar.classList.toggle('collapsed');
+            
+            if (sidebar.classList.contains('collapsed')) {
+                mainContent.style.marginLeft = '80px';
+                // Close all submenus when sidebar is collapsed
+                document.querySelectorAll('.submenu').forEach(submenu => {
+                    submenu.classList.remove('open');
+                });
+                document.querySelectorAll('.submenu-arrow').forEach(arrow => {
+                    arrow.style.transform = '';
+                });
+            } else {
+                mainContent.style.marginLeft = '';
+            }
+        }
+        
+        // Toggle Submenu - Improved Version
+        function toggleSubmenu(submenuId, button) {
+            const clickedSubmenu = document.getElementById(submenuId);
+            const clickedArrow = button.querySelector('.submenu-arrow');
+            const isOpening = !clickedSubmenu.classList.contains('open');
+            
+            // Close all other submenus first
+            document.querySelectorAll('.submenu').forEach(submenu => {
+                if (submenu.id !== submenuId) {
+                    submenu.classList.remove('open');
+                    // Reset arrow rotation for other submenus
+                    const parentButton = submenu.previousElementSibling;
+                    if (parentButton) {
+                        const arrow = parentButton.querySelector('.submenu-arrow');
+                        if (arrow) {
+                            arrow.style.transform = '';
+                        }
+                    }
+                }
+            });
+            
+            // Toggle the clicked submenu
+            clickedSubmenu.classList.toggle('open');
+            clickedArrow.style.transform = clickedSubmenu.classList.contains('open') ? 'rotate(180deg)' : '';
+            
+            // Add/remove active class to parent button
+            if (isOpening) {
+                button.classList.add('bg-persian-blue-50');
+            } else {
+                button.classList.remove('bg-persian-blue-50');
+            }
+        }
+        
+        // Set Active Menu Item
+        function setActiveMenu(clickedElement) {
+            // Remove active class from all menu items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked element
+            clickedElement.classList.add('active');
+            
+            // Update icon color
+            const icon = clickedElement.querySelector('.menu-icon');
+            document.querySelectorAll('.menu-icon').forEach(i => {
+                i.classList.remove('text-persian-blue-500');
+                i.classList.add('text-gray-400');
+            });
+            if (icon) {
+                icon.classList.remove('text-gray-400');
+                icon.classList.add('text-persian-blue-500');
+            }
+        }
+        
+        // Add click event listeners to menu items (for visual feedback before navigation)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Main menu items - allow navigation, just update visual state
+            document.querySelectorAll('nav > a.menu-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Don't prevent default - allow link navigation
+                    setActiveMenu(this);
+                });
+            });
+            
+            // Submenu items - allow navigation, just update visual state
+            document.querySelectorAll('.submenu a').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Don't prevent default - allow link navigation
+                    
+                    // Remove active from all items including main menu
+                    document.querySelectorAll('.menu-item').forEach(menuItem => {
+                        menuItem.classList.remove('active');
+                    });
+                    document.querySelectorAll('.submenu a').forEach(subItem => {
+                        subItem.classList.remove('bg-persian-blue-50', 'text-persian-blue-600');
+                    });
+                    
+                    // Add active style to clicked submenu item
+                    this.classList.add('bg-persian-blue-50', 'text-persian-blue-600');
+                    
+                    // Also highlight parent menu button
+                    const parentSubmenu = this.closest('.submenu');
+                    const parentButton = parentSubmenu.previousElementSibling;
+                    if (parentButton) {
+                        const parentIcon = parentButton.querySelector('.menu-icon');
+                        if (parentIcon) {
+                            parentIcon.classList.remove('text-gray-400');
+                            parentIcon.classList.add('text-persian-blue-500');
+                        }
+                    }
+                });
+            });
+        });
+        
+        // Toggle Profile Dropdown
+        function toggleProfileMenu() {
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('profileDropdown');
+            const profileButton = event.target.closest('button[onclick="toggleProfileMenu()"]');
+            
+            if (!profileButton && !dropdown.classList.contains('hidden')) {
+                dropdown.classList.add('hidden');
+            }
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (window.innerWidth >= 1024) {
+                // Desktop
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('active');
+                
+                if (!sidebar.classList.contains('collapsed')) {
+                    mainContent.style.marginLeft = '';
+                }
+            } else {
+                // Mobile
+                if (!sidebar.classList.contains('-translate-x-full')) {
+                    overlay.classList.add('active');
+                }
+                mainContent.style.marginLeft = '';
+                sidebar.classList.remove('collapsed');
+            }
+        });
+        
+        // Modal Functions
+        let currentEditId = null;
+        let currentDeleteId = null;
+        
+        function openAddModal() {
+            document.getElementById('modalTitle').textContent = 'Tambah Jabatan Tendik';
+            document.getElementById('namaJabatan').value = '';
+            document.getElementById('deskripsi').value = '';
+            currentEditId = null;
+            
+            const modal = document.getElementById('formModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        
+        function openEditModal(id) {
+            document.getElementById('modalTitle').textContent = 'Edit Jabatan Tendik';
+            currentEditId = id;
+            
+            // Dummy data for demo - in real app, fetch from server
+            const dummyData = {
+                1: { nama: 'PLP (Pranata Laboratorium Pendidikan)', deskripsi: 'Tenaga kependidikan yang bertugas mengelola laboratorium pendidikan' },
+                2: { nama: 'Pranata Komputer', deskripsi: 'Tenaga kependidikan yang bertugas mengelola sistem informasi dan teknologi' },
+                3: { nama: 'Pustakawan', deskripsi: 'Tenaga kependidikan yang bertugas mengelola perpustakaan dan sumber informasi' },
+                4: { nama: 'Arsiparis', deskripsi: 'Tenaga kependidikan yang bertugas mengelola arsip dan dokumen institusi' },
+                5: { nama: 'Teknisi', deskripsi: 'Tenaga kependidikan yang bertugas dalam pemeliharaan sarana dan prasarana' }
+            };
+            
+            if (dummyData[id]) {
+                document.getElementById('namaJabatan').value = dummyData[id].nama;
+                document.getElementById('deskripsi').value = dummyData[id].deskripsi;
+            }
+            
+            const modal = document.getElementById('formModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('formModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        function confirmDelete(id) {
+            currentDeleteId = id;
+            const modal = document.getElementById('deleteModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            currentDeleteId = null;
+        }
+        
+        function deleteData() {
+            // In real app, send delete request to server
+            console.log('Deleting ID:', currentDeleteId);
+            closeDeleteModal();
+            // Show success message or refresh table
+            alert('Data berhasil dihapus!');
+        }
+        
+        // Form submit handler
+        document.getElementById('jabatanForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nama = document.getElementById('namaJabatan').value;
+            const deskripsi = document.getElementById('deskripsi').value;
+            
+            if (currentEditId) {
+                // Edit mode
+                console.log('Updating ID:', currentEditId, { nama, deskripsi });
+                alert('Data berhasil diperbarui!');
+            } else {
+                // Add mode
+                console.log('Adding new:', { nama, deskripsi });
+                alert('Data berhasil ditambahkan!');
+            }
+            
+            closeModal();
+        });
+        
+        // Close modals when clicking outside
+        document.getElementById('formModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteModal();
+            }
+        });
+    </script>
+</body>
+</html>
