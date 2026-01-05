@@ -311,7 +311,7 @@
             <!-- Page Header -->
             <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-800">Daftar Kegiatan Tendik</h2>
+                    <h2 class="text-2xl font-bold text-gray-800">Daftar Kegiatan</h2>
                     <p class="text-gray-500 text-sm mt-1">Kelola kegiatan tenaga kependidikan</p>
                 </div>
                 <button onclick="openAddModal()" class="inline-flex items-center px-4 py-2.5 bg-gradient-to-r from-persian-blue-500 to-persian-blue-600 text-white font-medium rounded-xl hover:from-persian-blue-600 hover:to-persian-blue-700 transition-all duration-200 shadow-lg shadow-persian-blue-500/30">
@@ -322,91 +322,180 @@
             
             <!-- Table Card -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <!-- Table Header with Search -->
-                <div class="p-4 lg:p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-sm text-gray-500">Tampilkan</span>
-                        <select class="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-persian-blue-500 focus:border-transparent">
-                            <option>10</option>
-                            <option>25</option>
-                            <option>50</option>
-                            <option>100</option>
-                        </select>
-                        <span class="text-sm text-gray-500">data</span>
-                    </div>
-                    <div class="flex items-center bg-gray-100 rounded-xl px-4 py-2.5">
-                        <ion-icon name="search-outline" class="text-gray-400 mr-2"></ion-icon>
-                        <input type="text" placeholder="Cari kegiatan..." class="bg-transparent border-none outline-none text-sm text-gray-600 w-48">
-                    </div>
-                </div>
-                
                 <!-- Table -->
                 <div class="overflow-x-auto">
                     <table class="w-full">
-                        <thead class="bg-gray-50">
+                        <!-- Header dengan background biru -->
+                        <thead class="bg-gradient-to-r from-persian-blue-500 to-persian-blue-600">
                             <tr>
-                                <th class="text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider w-16">No</th>
-                                <th class="text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Nama Kegiatan</th>
-                                <th class="text-left py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider">Deskripsi</th>
-                                <th class="text-center py-4 px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider w-32">Aksi</th>
+                                <th class="text-left py-4 px-6 text-xs font-bold text-white uppercase tracking-wider" style="min-width: 400px;">PLP Kategori Keterampilan</th>
+                                <th class="text-center py-4 px-6 text-xs font-bold text-white uppercase tracking-wider w-32">Jenjang</th>
+                                <th class="text-center py-4 px-6 text-xs font-bold text-white uppercase tracking-wider w-32">Angka Kredit</th>
+                                <th class="text-center py-4 px-6 text-xs font-bold text-white uppercase tracking-wider w-32">Hasil Kerja</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            <tr class="hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-6 text-sm text-gray-600">1</td>
-                                <td class="py-4 px-6">
+                            <!-- Kategori Utama I -->
+                            <tr class="bg-gray-50 hover:bg-gray-100 transition-colors">
+                                <td class="py-4 px-6" colspan="4">
                                     <div class="flex items-center">
-                                        <span class="font-medium text-gray-800">PLP (Pranata Laboratorium Pendidikan)</span>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-6 text-sm text-gray-500">Tenaga kependidikan yang bertugas mengelola laboratorium pendidikan</td>
-                                <td class="py-4 px-6">
-                                    <div class="flex items-center justify-center space-x-2">
-                                        <button onclick="openEditModal(1)" class="p-2 rounded-lg bg-amber-50 text-amber-500 hover:bg-amber-100 transition-colors" title="Edit">
-                                            <ion-icon name="create-outline" class="text-lg"></ion-icon>
-                                        </button>
-                                        <button onclick="confirmDelete(1)" class="p-2 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition-colors" title="Hapus">
-                                            <ion-icon name="trash-outline" class="text-lg"></ion-icon>
-                                        </button>
+                                        <span class="font-bold text-gray-800 text-sm">I</span>
+                                        <span class="font-bold text-gray-800 text-sm ml-6">PENDIDIKAN</span>
                                     </div>
                                 </td>
                             </tr>
-                            <tr class="hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-6 text-sm text-gray-600">2</td>
-                                <td class="py-4 px-6">
+                            
+                            <!-- Sub Kategori I.A -->
+                            <tr class="bg-white hover:bg-gray-50 transition-colors">
+                                <td class="py-4 px-6" colspan="4">
                                     <div class="flex items-center">
-                                        <span class="font-medium text-gray-800">Pranata Komputer</span>
-                                    </div>
-                                </td>
-                                <td class="py-4 px-6 text-sm text-gray-500">Tenaga kependidikan yang bertugas mengelola sistem informasi dan teknologi</td>
-                                <td class="py-4 px-6">
-                                    <div class="flex items-center justify-center space-x-2">
-                                        <button onclick="openEditModal(2)" class="p-2 rounded-lg bg-amber-50 text-amber-500 hover:bg-amber-100 transition-colors" title="Edit">
-                                            <ion-icon name="create-outline" class="text-lg"></ion-icon>
-                                        </button>
-                                        <button onclick="confirmDelete(2)" class="p-2 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition-colors" title="Hapus">
-                                            <ion-icon name="trash-outline" class="text-lg"></ion-icon>
-                                        </button>
+                                        <span class="font-semibold text-gray-700 text-sm">I.A</span>
+                                        <span class="font-semibold text-gray-700 text-sm ml-4">PENDIDIKAN FORMAL DAN MEMPEROLEH IJAZAH/GELAR</span>
                                     </div>
                                 </td>
                             </tr>
-                            <tr class="hover:bg-gray-50 transition-colors">
-                                <td class="py-4 px-6 text-sm text-gray-600">3</td>
+                            
+                            <!-- Item I.A.1 -->
+                            <tr class="bg-white hover:bg-gray-50 transition-colors border-b border-gray-100">
                                 <td class="py-4 px-6">
                                     <div class="flex items-center">
-                                        <span class="font-medium text-gray-800">Pustakawan</span>
+                                        <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-persian-blue-500 text-white text-xs font-semibold min-w-[50px]">I.A.1</span>
+                                        <span class="text-gray-700 text-sm ml-4">Diploma III (D3)</span>
                                     </div>
                                 </td>
-                                <td class="py-4 px-6 text-sm text-gray-500">Tenaga kependidikan yang bertugas mengelola perpustakaan dan sumber informasi</td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-gray-600 text-sm">Semua Jenjang</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-gray-800 font-semibold text-sm">60</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-persian-blue-600 text-sm font-medium">Ijazah</span>
+                                </td>
+                            </tr>
+                            
+                            <!-- Item I.A.2 -->
+                            <tr class="bg-white hover:bg-gray-50 transition-colors border-b border-gray-100">
                                 <td class="py-4 px-6">
-                                    <div class="flex items-center justify-center space-x-2">
-                                        <button onclick="openEditModal(3)" class="p-2 rounded-lg bg-amber-50 text-amber-500 hover:bg-amber-100 transition-colors" title="Edit">
-                                            <ion-icon name="create-outline" class="text-lg"></ion-icon>
-                                        </button>
-                                        <button onclick="confirmDelete(3)" class="p-2 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition-colors" title="Hapus">
-                                            <ion-icon name="trash-outline" class="text-lg"></ion-icon>
-                                        </button>
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-persian-blue-500 text-white text-xs font-semibold min-w-[50px]">I.A.2</span>
+                                        <span class="text-gray-700 text-sm ml-4">Diploma IV (D4)</span>
                                     </div>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-gray-600 text-sm">Semua Jenjang</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-gray-800 font-semibold text-sm">60</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-persian-blue-600 text-sm font-medium">Ijazah</span>
+                                </td>
+                            </tr>
+                            
+                            <!-- Sub Kategori I.B -->
+                            <tr class="bg-white hover:bg-gray-50 transition-colors">
+                                <td class="py-4 px-6" colspan="4">
+                                    <div class="flex items-start">
+                                        <span class="font-semibold text-gray-700 text-sm">I.B</span>
+                                        <span class="font-semibold text-gray-700 text-sm ml-4">PENDIDIKAN DAN PELATIHAN FUNGSIONAL DI BIDANG PENGELOLAAN LABORATORIUM SERTA MEMPEROLEH SURAT TANDA TAMAT PENDIDIKAN DAN PELATIH (STTPP) ATAU SERTIFIKAT</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Item I.B.1 -->
+                            <tr class="bg-white hover:bg-gray-50 transition-colors border-b border-gray-100">
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-persian-blue-500 text-white text-xs font-semibold min-w-[50px]">I.B.1</span>
+                                        <span class="text-gray-700 text-sm ml-4">Lamanya lebih dari 960 jam</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-gray-600 text-sm">Semua Jenjang</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-gray-800 font-semibold text-sm">15</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-persian-blue-600 text-sm font-medium">Sertifikat</span>
+                                </td>
+                            </tr>
+                            
+                            <!-- Item I.B.2 -->
+                            <tr class="bg-white hover:bg-gray-50 transition-colors border-b border-gray-100">
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-persian-blue-500 text-white text-xs font-semibold min-w-[50px]">I.B.2</span>
+                                        <span class="text-gray-700 text-sm ml-4">Lamanya antara 641 - 960 jam</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-gray-600 text-sm">Semua Jenjang</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-gray-800 font-semibold text-sm">9</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-persian-blue-600 text-sm font-medium">Sertifikat</span>
+                                </td>
+                            </tr>
+                            
+                            <!-- Kategori Utama II -->
+                            <tr class="bg-gray-50 hover:bg-gray-100 transition-colors">
+                                <td class="py-4 px-6" colspan="4">
+                                    <div class="flex items-center">
+                                        <span class="font-bold text-gray-800 text-sm">II</span>
+                                        <span class="font-bold text-gray-800 text-sm ml-5">PELAKSANAAN KEGIATAN PENGELOLAAN LABORATORIUM</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Sub Kategori II.A -->
+                            <tr class="bg-white hover:bg-gray-50 transition-colors">
+                                <td class="py-4 px-6" colspan="4">
+                                    <div class="flex items-center">
+                                        <span class="font-semibold text-gray-700 text-sm">II.A</span>
+                                        <span class="font-semibold text-gray-700 text-sm ml-3">PERSIAPAN KEGIATAN LABORATORIUM</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Item II.A.1 -->
+                            <tr class="bg-white hover:bg-gray-50 transition-colors border-b border-gray-100">
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-persian-blue-500 text-white text-xs font-semibold min-w-[50px]">II.A.1</span>
+                                        <span class="text-gray-700 text-sm ml-4">Menyusun program kegiatan laboratorium</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-gray-600 text-sm">Ahli Pertama</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-gray-800 font-semibold text-sm">0.45</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-persian-blue-600 text-sm font-medium">Dokumen</span>
+                                </td>
+                            </tr>
+                            
+                            <!-- Item II.A.2 -->
+                            <tr class="bg-white hover:bg-gray-50 transition-colors border-b border-gray-100">
+                                <td class="py-4 px-6">
+                                    <div class="flex items-center">
+                                        <span class="inline-flex items-center justify-center px-2.5 py-1 rounded-lg bg-persian-blue-500 text-white text-xs font-semibold min-w-[50px]">II.A.2</span>
+                                        <span class="text-gray-700 text-sm ml-4">Menyiapkan bahan dan peralatan laboratorium</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-gray-600 text-sm">Terampil</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-gray-800 font-semibold text-sm">0.15</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="text-persian-blue-600 text-sm font-medium">Dokumen</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -415,13 +504,15 @@
                 
                 <!-- Table Footer with Pagination -->
                 <div class="p-4 lg:p-6 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <p class="text-sm text-gray-500">Menampilkan 1-5 dari 5 data</p>
+                    <p class="text-sm text-gray-500">Menampilkan 1-10 dari 50 data</p>
                     <div class="flex items-center space-x-2">
                         <button class="px-3 py-2 rounded-lg border border-gray-200 text-gray-400 cursor-not-allowed" disabled>
                             <ion-icon name="chevron-back-outline"></ion-icon>
                         </button>
                         <button class="px-4 py-2 rounded-lg bg-persian-blue-500 text-white font-medium">1</button>
-                        <button class="px-3 py-2 rounded-lg border border-gray-200 text-gray-400 cursor-not-allowed" disabled>
+                        <button class="px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">2</button>
+                        <button class="px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">3</button>
+                        <button class="px-3 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
                             <ion-icon name="chevron-forward-outline"></ion-icon>
                         </button>
                     </div>
@@ -430,28 +521,179 @@
         </main>
         
         <!-- Add/Edit Modal -->
-        <div id="formModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
-            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
-                <div class="p-6 border-b border-gray-100 flex items-center justify-between">
-                    <h3 id="modalTitle" class="text-lg font-bold text-gray-800">Tambah Jabatan Tendik</h3>
-                    <button onclick="closeModal()" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                        <ion-icon name="close-outline" class="text-xl text-gray-500"></ion-icon>
+        <!-- Add/Edit Modal -->
+        <div id="formModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 transition-opacity duration-300">
+            <!-- Backdrop -->
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+            
+            <!-- Modal Content -->
+            <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl flex flex-col max-h-[90vh] transform transition-all scale-100">
+                <!-- Modal Header -->
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-white rounded-t-2xl z-10 shrink-0">
+                    <div>
+                        <h3 id="modalTitle" class="text-xl font-bold text-gray-800">Tambah Kegiatan Tendik</h3>
+                        <p class="text-sm text-gray-500 mt-1">Lengkapi formulir berikut untuk menambah data kegiatan</p>
+                    </div>
+                    <button onclick="closeModal()" class="p-2 rounded-xl text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-all duration-200">
+                        <ion-icon name="close" class="text-2xl"></ion-icon>
                     </button>
                 </div>
-                <form id="jabatanForm" class="p-6 space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Nama Jabatan <span class="text-red-500">*</span></label>
-                        <input type="text" id="namaJabatan" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-persian-blue-500 focus:border-transparent transition-all" placeholder="Masukkan nama jabatan" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi</label>
-                        <textarea id="deskripsi" rows="4" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-persian-blue-500 focus:border-transparent transition-all resize-none" placeholder="Masukkan deskripsi jabatan"></textarea>
-                    </div>
-                    <div class="flex items-center justify-end space-x-3 pt-4">
-                        <button type="button" onclick="closeModal()" class="px-5 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-medium hover:bg-gray-50 transition-colors">Batal</button>
-                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-persian-blue-500 to-persian-blue-600 text-white font-medium hover:from-persian-blue-600 hover:to-persian-blue-700 transition-all shadow-lg shadow-persian-blue-500/30">Simpan</button>
-                    </div>
-                </form>
+                
+                <!-- Modal Body (Scrollable) -->
+                <div class="p-6 overflow-y-auto custom-scrollbar grow">
+                    <form id="kegiatanForm" class="space-y-8">
+                        
+                        <!-- Section 1: Informasi Jabatan -->
+                        <div class="space-y-5">
+                            <div class="flex items-center space-x-3 pb-2 border-b border-gray-50">
+                                <h4 class="text-lg font-bold text-gray-800">Informasi Jabatan</h4>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div class="space-y-2">
+                                    <label class="text-sm font-semibold text-gray-700 ml-1">Jabatan <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <select id="jabatan" class="w-full pl-4 pr-10 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-persian-blue-500/20 focus:border-persian-blue-500 transition-all bg-gray-50/50 hover:bg-white appearance-none cursor-pointer" required>
+                                            <option value="">Pilih Jabatan</option>
+                                            <option value="1">PLP (Pranata Laboratorium Pendidikan)</option>
+                                            <option value="2">Pranata Komputer</option>
+                                            <option value="3">Pustakawan</option>
+                                            <option value="4">Arsiparis</option>
+                                        </select>
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-400">
+                                            <ion-icon name="chevron-down"></ion-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2">
+                                    <label class="text-sm font-semibold text-gray-700 ml-1">Tingkat <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <select id="tingkat" class="w-full pl-4 pr-10 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-persian-blue-500/20 focus:border-persian-blue-500 transition-all bg-gray-50/50 hover:bg-white appearance-none cursor-pointer" required>
+                                            <option value="">Pilih Tingkat</option>
+                                            <option value="1">Keterampilan</option>
+                                            <option value="2">Keahlian</option>
+                                        </select>
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-400">
+                                            <ion-icon name="chevron-down"></ion-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2">
+                                    <label class="text-sm font-semibold text-gray-700 ml-1">Jenjang <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <select id="jenjang" class="w-full pl-4 pr-10 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-persian-blue-500/20 focus:border-persian-blue-500 transition-all bg-gray-50/50 hover:bg-white appearance-none cursor-pointer" required>
+                                            <option value="">Pilih Jenjang</option>
+                                            <option value="1">Terampil</option>
+                                            <option value="2">Mahir</option>
+                                            <option value="3">Penyelia</option>
+                                            <option value="4">Ahli Pertama</option>
+                                            <option value="5">Ahli Muda</option>
+                                            <option value="6">Ahli Madya</option>
+                                            <option value="7">Semua Jenjang</option>
+                                        </select>
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-400">
+                                            <ion-icon name="chevron-down"></ion-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2">
+                                    <label class="text-sm font-semibold text-gray-700 ml-1">Kategori <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <select id="kategori" class="w-full pl-4 pr-10 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-persian-blue-500/20 focus:border-persian-blue-500 transition-all bg-gray-50/50 hover:bg-white appearance-none cursor-pointer" required>
+                                            <option value="">Pilih Kategori</option>
+                                            <option value="1">Unsur Utama</option>
+                                            <option value="2">Unsur Penunjang</option>
+                                        </select>
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-400">
+                                            <ion-icon name="chevron-down"></ion-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Detail Kegiatan -->
+                        <div class="space-y-5">
+                            <div class="flex items-center space-x-3 pb-2 border-b border-gray-50 pt-2">
+                                <h4 class="text-lg font-bold text-gray-800">Detail Kegiatan</h4>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div class="space-y-2">
+                                    <label class="text-sm font-semibold text-gray-700 ml-1">Kelompok Kegiatan <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <select id="kelompok" class="w-full pl-4 pr-10 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-persian-blue-500/20 focus:border-persian-blue-500 transition-all bg-gray-50/50 hover:bg-white appearance-none cursor-pointer" required>
+                                            <option value="">Pilih Kelompok</option>
+                                            <option value="1">Pendidikan</option>
+                                            <option value="2">Pelaksanaan Kegiatan Pengelolaan Laboratorium</option>
+                                            <option value="3">Pengembangan Profesi</option>
+                                        </select>
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-400">
+                                            <ion-icon name="chevron-down"></ion-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2">
+                                    <label class="text-sm font-semibold text-gray-700 ml-1">Sub Kelompok <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <select id="subKelompok" class="w-full pl-4 pr-10 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-persian-blue-500/20 focus:border-persian-blue-500 transition-all bg-gray-50/50 hover:bg-white appearance-none cursor-pointer" required>
+                                            <option value="">Pilih Sub Kelompok</option>
+                                            <option value="1">Pendidikan Formal</option>
+                                            <option value="2">Pendidikan dan Pelatihan Fungsional</option>
+                                            <option value="3">Persiapan Kegiatan Laboratorium</option>
+                                            <option value="4">Pelaksanaan Kegiatan Laboratorium</option>
+                                        </select>
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-400">
+                                            <ion-icon name="chevron-down"></ion-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2">
+                                    <label class="text-sm font-semibold text-gray-700 ml-1">Hasil Kerja <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <select id="hasilKerja" class="w-full pl-4 pr-10 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-persian-blue-500/20 focus:border-persian-blue-500 transition-all bg-gray-50/50 hover:bg-white appearance-none cursor-pointer" required>
+                                            <option value="">Pilih Hasil Kerja</option>
+                                            <option value="1">Ijazah</option>
+                                            <option value="2">Sertifikat</option>
+                                            <option value="3">Dokumen</option>
+                                            <option value="4">Laporan</option>
+                                            <option value="5">Buku</option>
+                                            <option value="6">Artikel</option>
+                                        </select>
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-400">
+                                            <ion-icon name="chevron-down"></ion-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-2">
+                                    <label class="text-sm font-semibold text-gray-700 ml-1">Angka Kredit <span class="text-red-500">*</span></label>
+                                    <input type="number" step="0.01" id="angkaKredit" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-persian-blue-500/20 focus:border-persian-blue-500 transition-all bg-gray-50/50 hover:bg-white" placeholder="0.00" required>
+                                </div>
+                                
+                                <div class="space-y-2 md:col-span-2">
+                                    <label class="text-sm font-semibold text-gray-700 ml-1">Nama Kegiatan <span class="text-red-500">*</span></label>
+                                    <textarea id="namaKegiatan" rows="2" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-persian-blue-500/20 focus:border-persian-blue-500 transition-all bg-gray-50/50 hover:bg-white resize-none" placeholder="Masukkan deskripsi lengkap kegiatan..." required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Modal Footer -->
+                <div class="p-6 border-t border-gray-100 bg-gray-50 rounded-b-2xl flex items-center justify-end space-x-3 shrink-0">
+                    <button type="button" onclick="closeModal()" class="px-6 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-semibold hover:bg-white hover:border-gray-300 transition-all duration-200">
+                        Batal
+                    </button>
+                    <button type="submit" form="kegiatanForm" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-persian-blue-600 to-persian-blue-700 text-white font-semibold hover:from-persian-blue-700 hover:to-persian-blue-800 transition-all duration-200 shadow-lg shadow-persian-blue-500/25">
+                        Simpan Data
+                    </button>
+                </div>
             </div>
         </div>
         
@@ -651,10 +893,21 @@
         let currentEditId = null;
         let currentDeleteId = null;
         
+        function resetForm() {
+            document.getElementById('jabatan').value = '';
+            document.getElementById('tingkat').value = '';
+            document.getElementById('jenjang').value = '';
+            document.getElementById('kategori').value = '';
+            document.getElementById('kelompok').value = '';
+            document.getElementById('subKelompok').value = '';
+            document.getElementById('hasilKerja').value = '';
+            document.getElementById('namaKegiatan').value = '';
+            document.getElementById('angkaKredit').value = '';
+        }
+        
         function openAddModal() {
-            document.getElementById('modalTitle').textContent = 'Tambah Jabatan Tendik';
-            document.getElementById('namaJabatan').value = '';
-            document.getElementById('deskripsi').value = '';
+            document.getElementById('modalTitle').textContent = 'Tambah Kegiatan Tendik';
+            resetForm();
             currentEditId = null;
             
             const modal = document.getElementById('formModal');
@@ -663,21 +916,26 @@
         }
         
         function openEditModal(id) {
-            document.getElementById('modalTitle').textContent = 'Edit Jabatan Tendik';
+            document.getElementById('modalTitle').textContent = 'Edit Kegiatan Tendik';
             currentEditId = id;
             
             // Dummy data for demo - in real app, fetch from server
             const dummyData = {
-                1: { nama: 'PLP (Pranata Laboratorium Pendidikan)', deskripsi: 'Tenaga kependidikan yang bertugas mengelola laboratorium pendidikan' },
-                2: { nama: 'Pranata Komputer', deskripsi: 'Tenaga kependidikan yang bertugas mengelola sistem informasi dan teknologi' },
-                3: { nama: 'Pustakawan', deskripsi: 'Tenaga kependidikan yang bertugas mengelola perpustakaan dan sumber informasi' },
-                4: { nama: 'Arsiparis', deskripsi: 'Tenaga kependidikan yang bertugas mengelola arsip dan dokumen institusi' },
-                5: { nama: 'Teknisi', deskripsi: 'Tenaga kependidikan yang bertugas dalam pemeliharaan sarana dan prasarana' }
+                1: { jabatan: '1', tingkat: '1', jenjang: '7', kategori: '1', kelompok: '1', subKelompok: '1', hasilKerja: '1', namaKegiatan: 'Diploma III (D3)', angkaKredit: '60' },
+                2: { jabatan: '1', tingkat: '1', jenjang: '7', kategori: '1', kelompok: '1', subKelompok: '1', hasilKerja: '1', namaKegiatan: 'Diploma IV (D4)', angkaKredit: '60' },
+                3: { jabatan: '1', tingkat: '1', jenjang: '7', kategori: '1', kelompok: '1', subKelompok: '2', hasilKerja: '2', namaKegiatan: 'Lamanya lebih dari 960 jam', angkaKredit: '15' },
             };
             
             if (dummyData[id]) {
-                document.getElementById('namaJabatan').value = dummyData[id].nama;
-                document.getElementById('deskripsi').value = dummyData[id].deskripsi;
+                document.getElementById('jabatan').value = dummyData[id].jabatan;
+                document.getElementById('tingkat').value = dummyData[id].tingkat;
+                document.getElementById('jenjang').value = dummyData[id].jenjang;
+                document.getElementById('kategori').value = dummyData[id].kategori;
+                document.getElementById('kelompok').value = dummyData[id].kelompok;
+                document.getElementById('subKelompok').value = dummyData[id].subKelompok;
+                document.getElementById('hasilKerja').value = dummyData[id].hasilKerja;
+                document.getElementById('namaKegiatan').value = dummyData[id].namaKegiatan;
+                document.getElementById('angkaKredit').value = dummyData[id].angkaKredit;
             }
             
             const modal = document.getElementById('formModal');
@@ -714,19 +972,28 @@
         }
         
         // Form submit handler
-        document.getElementById('jabatanForm').addEventListener('submit', function(e) {
+        document.getElementById('kegiatanForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const nama = document.getElementById('namaJabatan').value;
-            const deskripsi = document.getElementById('deskripsi').value;
+            const formData = {
+                jabatan: document.getElementById('jabatan').value,
+                tingkat: document.getElementById('tingkat').value,
+                jenjang: document.getElementById('jenjang').value,
+                kategori: document.getElementById('kategori').value,
+                kelompok: document.getElementById('kelompok').value,
+                subKelompok: document.getElementById('subKelompok').value,
+                hasilKerja: document.getElementById('hasilKerja').value,
+                namaKegiatan: document.getElementById('namaKegiatan').value,
+                angkaKredit: document.getElementById('angkaKredit').value
+            };
             
             if (currentEditId) {
                 // Edit mode
-                console.log('Updating ID:', currentEditId, { nama, deskripsi });
+                console.log('Updating ID:', currentEditId, formData);
                 alert('Data berhasil diperbarui!');
             } else {
                 // Add mode
-                console.log('Adding new:', { nama, deskripsi });
+                console.log('Adding new:', formData);
                 alert('Data berhasil ditambahkan!');
             }
             
