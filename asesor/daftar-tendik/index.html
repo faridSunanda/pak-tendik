@@ -15,9 +15,6 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -165,8 +162,8 @@
         <!-- Navigation Menu -->
         <nav class="flex-1 overflow-y-auto p-4 space-y-1">
             <!-- Dashboard -->
-            <a href="/kepala/dashboard/" class="menu-item active flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-persian-blue-50 transition-all duration-200">
-                <ion-icon name="grid" class="menu-icon text-xl mr-3 text-persian-blue-500"></ion-icon>
+            <a href="/asesor/dashboard/" class="flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-persian-blue-50 transition-all duration-200">
+                <ion-icon name="grid" class="menu-icon text-xl mr-3 text-gray-400"></ion-icon>
                 <span class="menu-text font-medium">Dashboard</span>
             </a>
             
@@ -179,8 +176,8 @@
                     </div>
                     <ion-icon name="chevron-down" class="menu-text text-gray-400 transition-transform duration-200 submenu-arrow"></ion-icon>
                 </button>
-                <div id="tendikSubmenu" class="submenu ml-6 mt-1 space-y-1">
-                    <a href="/kepala/daftar-tendik/" class="flex items-center px-4 py-2.5 rounded-lg text-gray-500 hover:bg-persian-blue-50 hover:text-persian-blue-600 transition-all duration-200">
+                <div id="tendikSubmenu" class="open submenu ml-6 mt-1 space-y-1">
+                    <a href="/asesor/daftar-tendik/" class="menu-item active flex items-center px-4 py-2.5 rounded-lg text-gray-500 bg-persian-blue-50 hover:text-persian-blue-600 text-persian-blue-500 transition-all duration-200">
                         <ion-icon name="list" class="text-lg mr-3"></ion-icon>
                         <span class="text-sm font-medium">Daftar Tendik</span>
                     </a>
@@ -209,8 +206,8 @@
                     
                     <!-- Page Title -->
                     <div>
-                        <h1 class="text-xl font-bold text-gray-800">Dashboard</h1>
-                        <p class="text-sm text-gray-500 hidden sm:block">Selamat datang kembali!</p>
+                        <h1 class="text-xl font-bold text-gray-800"></h1>
+                        <p class="text-sm text-gray-500 hidden sm:block"></p>
                     </div>
                 </div>
                 
@@ -261,96 +258,103 @@
         
         <!-- Page Content -->
         <main class="p-4 lg:p-8">
-            <!-- Welcome Section -->
-            <div class="mb-8 p-6 bg-gradient-to-r from-persian-blue-600 to-persian-blue-800 rounded-2xl text-white relative overflow-hidden">
-                <div class="absolute right-0 top-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-                <div class="absolute right-20 bottom-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/2"></div>
-                <div class="relative z-10">
-                    <h2 class="text-2xl font-bold mb-2">Selamat Datang, Kepala User!</h2>
-                    <p class="text-persian-blue-100 text-sm lg:text-base">Setujui dan validasi kegiatan tendik yang sudah diajukan.</p>
-                    <button class="mt-4 px-6 py-2.5 bg-white text-persian-blue-600 rounded-xl font-semibold text-sm hover:bg-persian-blue-50 transition-colors shadow-lg">
-                        Validasi Kegiatan Tendik
-                    </button>
-                </div>
+            <div class="flex flex-col md:flex-row items-center justify-between mb-4">
+                <h1 class="text-2xl font-bold text-gray-800">Daftar Tendik</h1>
             </div>
-            
-            <!-- Stats Grid - Jenis Tendik -->
-            <div class="mb-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-4">Statistik Tendik Berdasarkan Jenis</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Total Tendik -->
-                    <div class="stat-card bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-persian-blue-400 to-persian-blue-600 flex items-center justify-center shadow-lg shadow-persian-blue-500/30">
-                                <ion-icon name="people" class="text-white text-2xl"></ion-icon>
-                            </div>
-                            <span class="text-xs font-medium text-green-500 bg-green-50 px-2.5 py-1 rounded-full">Aktif</span>
-                        </div>
-                        <h3 class="text-3xl font-bold text-gray-800 mb-1">156</h3>
-                        <p class="text-gray-500 text-sm">Total Tendik</p>
-                    </div>
-                    
-                    <!-- Tendik PLP -->
-                    <div class="stat-card bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30">
-                                <ion-icon name="flask" class="text-white text-2xl"></ion-icon>
-                            </div>
-                            <span class="text-xs font-medium text-emerald-500 bg-emerald-50 px-2.5 py-1 rounded-full">38%</span>
-                        </div>
-                        <h3 class="text-3xl font-bold text-gray-800 mb-1">59</h3>
-                        <p class="text-gray-500 text-sm">Tendik PLP</p>
-                    </div>
-                    
-                    <!-- Pranata Komputer -->
-                    <div class="stat-card bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-400 to-violet-600 flex items-center justify-center shadow-lg shadow-violet-500/30">
-                                <ion-icon name="desktop" class="text-white text-2xl"></ion-icon>
-                            </div>
-                            <span class="text-xs font-medium text-violet-500 bg-violet-50 px-2.5 py-1 rounded-full">27%</span>
-                        </div>
-                        <h3 class="text-3xl font-bold text-gray-800 mb-1">42</h3>
-                        <p class="text-gray-500 text-sm">Pranata Komputer</p>
-                    </div>
-                    
-                    <!-- Pustakawan -->
-                    <div class="stat-card bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/30">
-                                <ion-icon name="library" class="text-white text-2xl"></ion-icon>
-                            </div>
-                            <span class="text-xs font-medium text-amber-500 bg-amber-50 px-2.5 py-1 rounded-full">35%</span>
-                        </div>
-                        <h3 class="text-3xl font-bold text-gray-800 mb-1">55</h3>
-                        <p class="text-gray-500 text-sm">Pustakawan</p>
-                    </div>
+            <!-- Table Card -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gradient-to-r from-persian-blue-600 to-persian-blue-700">
+                            <tr>
+                                <th class="px-5 py-6 text-left text-xs font-semibold text-white uppercase tracking-wider">No</th>
+                                <th class="px-5 py-6 text-left text-xs font-semibold text-white uppercase tracking-wider">Nama</th>
+                                <th class="px-5 py-6 text-left text-xs font-semibold text-white uppercase tracking-wider">NPP</th>
+                                <th class="px-5 py-6 text-left text-xs font-semibold text-white uppercase tracking-wider">Jabatan</th>
+                                <th class="px-5 py-6 text-center text-xs font-semibold text-white uppercase tracking-wider">Angka Kredit</th>
+                                <th class="px-5 py-6 text-center text-xs font-semibold text-white uppercase tracking-wider">Kegiatan Diajukan</th>
+                                <th class="px-5 py-6 text-center text-xs font-semibold text-white uppercase tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-5 py-4 text-sm text-gray-600 font-medium">1</td>
+                                <td class="px-5 py-4 text-sm font-semibold text-gray-800">Farid Sunanda</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">123456789</td>
+                                <td class="px-5 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-blue-50 text-blue-700">
+                                        Pranata Komputer
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="text-sm font-bold text-gray-800">15</span>
+                                </td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-red-100 text-red-700 text-sm font-bold">12</span>
+                                </td>
+                                <td class="px-5 py-4 text-center">
+                                    <a href="/asesor/daftar-tendik/detail" class="inline-flex items-center px-3 py-1.5 bg-persian-blue-500 hover:bg-persian-blue-600 text-white text-xs font-medium rounded-lg transition-colors shadow-sm">
+                                        <ion-icon name="eye-outline" class="mr-1.5"></ion-icon>
+                                        Lihat Detail
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-5 py-4 text-sm text-gray-600 font-medium">2</td>
+                                <td class="px-5 py-4 text-sm font-semibold text-gray-800">Siti Aminah</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">987654321</td>
+                                <td class="px-5 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-purple-50 text-purple-700">
+                                        Pranata Komputer
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="text-sm font-bold text-gray-800">89</span>
+                                </td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-red-100 text-red-700 text-sm font-bold">5</span>
+                                </td>
+                                <td class="px-5 py-4 text-center">
+                                    <a href="/asesor/daftar-tendik/detail" class="inline-flex items-center px-3 py-1.5 bg-persian-blue-500 hover:bg-persian-blue-600 text-white text-xs font-medium rounded-lg transition-colors shadow-sm">
+                                        <ion-icon name="eye-outline" class="mr-1.5"></ion-icon>
+                                        Lihat Detail
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-5 py-4 text-sm text-gray-600 font-medium">3</td>
+                                <td class="px-5 py-4 text-sm font-semibold text-gray-800">Budi Pratama</td>
+                                <td class="px-5 py-4 text-sm text-gray-600">456789123</td>
+                                <td class="px-5 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-50 text-amber-700">
+                                        Pranata Komputer
+                                    </span>
+                                </td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="text-sm font-bold text-gray-800">210</span>
+                                </td>
+                                <td class="px-5 py-4 text-center">
+                                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-red-100 text-red-700 text-sm font-bold">20</span>
+                                </td>
+                                <td class="px-5 py-4 text-center">
+                                    <a href="/asesor/daftar-tendik/detail" class="inline-flex items-center px-3 py-1.5 bg-persian-blue-500 hover:bg-persian-blue-600 text-white text-xs font-medium rounded-lg transition-colors shadow-sm">
+                                        <ion-icon name="eye-outline" class="mr-1.5"></ion-icon>
+                                        Lihat Detail
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-
-            
-            
-            <!-- Main Content Grid -->
-                <!-- Charts Grid - Side by Side -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                <!-- Stats Grid - Jenjang Jabatan (Bar Chart) -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4">Distribusi Jenjang Jabatan</h3>
-                    <div class="relative" style="height: 300px;">
-                        <canvas id="jenjangJabatanChart"></canvas>
-                    </div>
-                </div>
-                
-                <!-- Tendik per Unit (Bar Chart) -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-6 border-b border-gray-100 flex items-center justify-between">
-                        <h3 class="font-bold text-gray-800">Tendik per Unit Kerja</h3>
-                        <a href="#" class="text-sm text-persian-blue-500 hover:text-persian-blue-600 font-medium">Lihat Semua</a>
-                    </div>
-                    <div class="p-6">
-                        <div class="relative" style="height: 280px;">
-                            <canvas id="unitKerjaChart"></canvas>
-                        </div>
+                <!-- Pagination -->
+                <div class="px-5 py-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 bg-gray-50/50">
+                    <p class="text-sm text-gray-500">Menampilkan <span class="font-semibold text-gray-700">1-3</span> dari <span class="font-semibold text-gray-700">25</span> data</p>
+                    <div class="flex items-center space-x-1">
+                        <button class="p-2 rounded-lg text-gray-400 hover:bg-white hover:text-persian-blue-600 transition-colors"><ion-icon name="chevron-back"></ion-icon></button>
+                        <button class="px-3 py-1.5 rounded-lg bg-persian-blue-500 text-white font-medium text-sm">1</button>
+                        <button class="px-3 py-1.5 rounded-lg text-gray-600 hover:bg-white font-medium text-sm">2</button>
+                        <button class="px-3 py-1.5 rounded-lg text-gray-600 hover:bg-white font-medium text-sm">3</button>
+                        <button class="p-2 rounded-lg text-gray-400 hover:bg-white hover:text-persian-blue-600 transition-colors"><ion-icon name="chevron-forward"></ion-icon></button>
                     </div>
                 </div>
             </div>
@@ -435,186 +439,6 @@
                 }
                 mainContent.style.marginLeft = '';
                 sidebar.classList.remove('collapsed');
-            }
-        });
-
-        // Jenjang Jabatan Bar Chart
-        const ctx = document.getElementById('jenjangJabatanChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Penyelia', 'Mahir', 'Terampil', 'Ahli Pertama', 'Ahli Muda', 'Ahli Madya'],
-                datasets: [{
-                    label: 'Jumlah Tendik',
-                    data: [18, 25, 32, 28, 35, 18],
-                    backgroundColor: [
-                        'rgba(244, 63, 94, 0.8)',   // rose-500
-                        'rgba(249, 115, 22, 0.8)',  // orange-500
-                        'rgba(202, 138, 4, 0.8)',   // yellow-600
-                        'rgba(6, 182, 212, 0.8)',   // cyan-500
-                        'rgba(59, 130, 246, 0.8)',  // blue-500
-                        'rgba(99, 102, 241, 0.8)'   // indigo-500
-                    ],
-                    borderColor: [
-                        'rgba(244, 63, 94, 1)',
-                        'rgba(249, 115, 22, 1)',
-                        'rgba(202, 138, 4, 1)',
-                        'rgba(6, 182, 212, 1)',
-                        'rgba(59, 130, 246, 1)',
-                        'rgba(99, 102, 241, 1)'
-                    ],
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    barThickness: 50
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
-                        padding: 12,
-                        titleFont: {
-                            size: 14,
-                            weight: 'bold'
-                        },
-                        bodyFont: {
-                            size: 13
-                        },
-                        cornerRadius: 8
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0, 0, 0, 0.05)'
-                        },
-                        ticks: {
-                            font: {
-                                size: 12
-                            },
-                            color: '#6B7280'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            font: {
-                                size: 12
-                            },
-                            color: '#6B7280'
-                        }
-                    }
-                }
-            }
-        });
-        
-        // Unit Kerja Stacked Bar Chart
-        const ctxUnit = document.getElementById('unitKerjaChart').getContext('2d');
-        new Chart(ctxUnit, {
-            type: 'bar',
-            data: {
-                labels: ['Fakultas Teknik', 'Fakultas MIPA', 'UPT Perpustakaan', 'UPT TIK'],
-                datasets: [
-                    {
-                        label: 'PLP',
-                        data: [15, 18, 2, 3],
-                        backgroundColor: 'rgba(16, 185, 129, 0.8)',
-                        borderColor: 'rgba(16, 185, 129, 1)',
-                        borderWidth: 1,
-                        borderRadius: 4
-                    },
-                    {
-                        label: 'Pranata Komputer',
-                        data: [12, 8, 5, 17],
-                        backgroundColor: 'rgba(139, 92, 246, 0.8)',
-                        borderColor: 'rgba(139, 92, 246, 1)',
-                        borderWidth: 1,
-                        borderRadius: 4
-                    },
-                    {
-                        label: 'Pustakawan',
-                        data: [5, 6, 28, 2],
-                        backgroundColor: 'rgba(245, 158, 11, 0.8)',
-                        borderColor: 'rgba(245, 158, 11, 1)',
-                        borderWidth: 1,
-                        borderRadius: 4
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            usePointStyle: true,
-                            pointStyle: 'circle',
-                            padding: 20,
-                            font: {
-                                size: 12
-                            }
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
-                        padding: 12,
-                        titleFont: {
-                            size: 14,
-                            weight: 'bold'
-                        },
-                        bodyFont: {
-                            size: 13
-                        },
-                        cornerRadius: 8,
-                        callbacks: {
-                            afterBody: function(context) {
-                                let total = 0;
-                                context[0].chart.data.datasets.forEach((dataset) => {
-                                    total += dataset.data[context[0].dataIndex];
-                                });
-                                return 'Total: ' + total;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        stacked: true,
-                        grid: {
-                            color: 'rgba(0, 0, 0, 0.05)'
-                        },
-                        ticks: {
-                            font: {
-                                size: 12
-                            },
-                            color: '#6B7280'
-                        }
-                    },
-                    x: {
-                        stacked: true,
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            font: {
-                                size: 11
-                            },
-                            color: '#6B7280',
-                            maxRotation: 0,
-                            minRotation: 0
-                        }
-                    }
-                }
             }
         });
     </script>
